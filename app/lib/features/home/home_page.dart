@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
+import '../../core/trial_service.dart';
 import '../../core/widgets.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   String? _quote;
   Timer? _quoteTimer;
+  TrialStatus? _trialStatus;
 
   void showQuote(String quote) {
     _quoteTimer?.cancel();
@@ -46,6 +48,27 @@ class _HomePageState extends State<HomePage> {
     if (mounted) {
       setState(() => _quote = null);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTrialStatus();
+  }
+
+  Future<void> _loadTrialStatus() async {
+    final status = await TrialService.status();
+    if (mounted) {
+      setState(() => _trialStatus = status);
+    }
+  }
+
+  String _trialLabel() {
+    final status = _trialStatus;
+    if (status == null) return 'TRIAL';
+    final remaining = status.expiresAt.difference(DateTime.now());
+    final days = (remaining.inHours / 24).ceil().clamp(1, 7);
+    return 'TRIAL • Sisa $days hari';
   }
 
   @override
@@ -132,6 +155,15 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(titles[index], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
             Text('${widget.username} • ${widget.role}', style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w600)),
+            if (_trialStatus != null)
+              Text(
+                _trialLabel(),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
           ],
         ),
         actions: [
