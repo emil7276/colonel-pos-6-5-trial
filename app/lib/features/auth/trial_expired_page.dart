@@ -57,7 +57,7 @@ class TrialExpiredPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     const SelectableText(
-                      'cp_colonel_pos@gmail.com',
+                      'cp.colonel.pos@gmail.com',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
