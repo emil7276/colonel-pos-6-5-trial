@@ -59,6 +59,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: cp-colonel-pos-6.5-apk
+          name: cp-colonel-pos-6.5-TRIAL-apk
           path: app/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
