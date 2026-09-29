@@ -195,7 +195,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               content: Text(
                                 ok
                                     ? 'Lisensi berhasil diaktifkan. Silakan tutup dan buka kembali aplikasi.'
-                                    : 'Kode aktivasi tidak valid atau sudah kedaluwarsa.',
+                                    : 'Gagal: ${LicenseService.lastError}',
                               ),
                             ),
                           );

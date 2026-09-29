@@ -52,7 +52,7 @@ class _TrialExpiredPageState extends State<TrialExpiredPage> {
             'Aktivasi berhasil. Silakan tutup dan buka kembali aplikasi.';
         _codeController.clear();
       } else {
-        _error = 'Kode aktivasi tidak valid atau sudah kedaluwarsa.';
+        _error = 'Gagal: ${LicenseService.lastError}';
       }
     });
   }
