@@ -99,9 +99,9 @@ class LicenseService {
         return null;
       }
 
-      final payloadBytes = base64Url.decode(parts[0]);
-      final signatureBytes = base64Url.decode(parts[1]);
-      final publicKeyBytes = base64Url.decode(publicKeyBase64);
+      final payloadBytes = base64Url.decode(base64Url.normalize(parts[0]));
+      final signatureBytes = base64Url.decode(base64Url.normalize(parts[1]));
+      final publicKeyBytes = base64Url.decode(base64Url.normalize(publicKeyBase64));
 
       final publicKey = SimplePublicKey(
         publicKeyBytes,
