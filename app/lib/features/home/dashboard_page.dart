@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants.dart';
 import '../../core/utils.dart';
 import '../../core/widgets.dart';
@@ -111,19 +112,22 @@ class _DashboardPageState extends State<DashboardPage> {
           const SizedBox(height: 2),
           Center(
             child: TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Untuk berlangganan, hubungi cp.colonel.pos@gmail.com'),
-                  ),
+              onPressed: () async {
+                final uri = Uri(
+                  scheme: 'mailto',
+                  path: 'cp.colonel.pos@gmail.com',
+                  queryParameters: {
+                    'subject': 'Saya ingin menambah layanan',
+                  },
                 );
+                await launchUrl(uri);
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: const Text(
-                'Berlangganan Sekarang',
+                'Berlangganan Sekarang • cp.colonel.pos@gmail.com',
                 style: TextStyle(
                   fontSize: 12,
                   color: red,

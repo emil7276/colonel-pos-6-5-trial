@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/license/license_service.dart';
 
 class TrialExpiredPage extends StatefulWidget {
@@ -156,23 +157,35 @@ class _TrialExpiredPageState extends State<TrialExpiredPage> {
                       ),
                     ],
                     const SizedBox(height: 24),
+                    const SizedBox(height: 6),
                     const Text(
-                      'Untuk mendapatkan kode aktivasi atau berlangganan, '
-                      'silakan hubungi:',
+                      'Ingin melanjutkan dan menambah layanan?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 15,
-                        height: 1.4,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const SelectableText(
-                      'cp.colonel.pos@gmail.com',
+                    OutlinedButton.icon(
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'mailto',
+                          path: 'cp.colonel.pos@gmail.com',
+                          queryParameters: {
+                            'subject': 'Saya ingin menambah layanan',
+                          },
+                        );
+                        await launchUrl(uri);
+                      },
+                      icon: const Icon(Icons.email_outlined),
+                      label: const Text('cp.colonel.pos@gmail.com'),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Klik email untuk mengirim: Saya ingin menambah layanan',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: TextStyle(fontSize: 13, height: 1.4),
                     ),
                     const SizedBox(height: 18),
                     const Text(
