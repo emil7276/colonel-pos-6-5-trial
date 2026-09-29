@@ -190,11 +190,20 @@ class _DashboardPageState extends State<DashboardPage> {
 
                           if (!context.mounted) return;
 
+    if (ok) {
+      final license = await LicenseService.getLicense();
+      if (!context.mounted) return;
+      setState(() {
+        _licenseInfo = license;
+      });
+    }
+
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
                                 ok
-                                    ? 'Lisensi berhasil diaktifkan. Silakan tutup dan buka kembali aplikasi.'
+                                    ? 'Lisensi berhasil diaktifkan.'
                                     : 'Gagal: ${LicenseService.lastError}',
                               ),
                             ),
