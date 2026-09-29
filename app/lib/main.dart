@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 import 'data/database.dart';
 import 'core/trial_service.dart';
+import 'core/license/license_service.dart';
 import 'features/auth/trial_expired_page.dart';
 
 Future<void> main() async {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 import '../../core/trial_service.dart';
+import '../../core/license/license_service.dart';
 import '../../core/widgets.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   String? _quote;
   Timer? _quoteTimer;
   TrialStatus? _trialStatus;
+  LicenseInfo? _licenseInfo;
 
   void showQuote(String quote) {
     _quoteTimer?.cancel();
@@ -58,18 +60,33 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadTrialStatus() async {
     final status = await TrialService.status();
+    final license = await LicenseService.getLicense();
     if (mounted) {
-      setState(() => _trialStatus = status);
+      setState(() { _trialStatus = status; _licenseInfo = license; });
     }
   }
 
-  String _trialLabel() {
-    final status = _trialStatus;
-    if (status == null) return 'TRIAL';
-    final remaining = status.expiresAt.difference(DateTime.now());
-    final days = (remaining.inHours / 24).ceil().clamp(1, 7);
-    return 'TRIAL • Sisa $days hari';
+String _trialLabel() {
+  final license = _licenseInfo;
+  if (license != null && license.isActive) {
+    final remaining = license.expiresAt.difference(DateTime.now());
+    final days = (remaining.inHours / 24).ceil().clamp(1, 9999);
+    String planLabel;
+    switch (license.plan) {
+      case "7D": planLabel = "7 HARI"; break;
+      case "1M": planLabel = "1 BULAN"; break;
+      case "3M": planLabel = "3 BULAN"; break;
+      case "1Y": planLabel = "1 TAHUN"; break;
+      default: planLabel = license.plan;
+    }
+    return "AKTIF • $planLabel • Sisa $days hari";
   }
+  final status = _trialStatus;
+  if (status == null) return "TRIAL";
+  final remaining = status.expiresAt.difference(DateTime.now());
+  final days = (remaining.inHours / 24).ceil().clamp(1, 7);
+  return "TRIAL • Sisa $days hari";
+}
 
   @override
   void dispose() {
@@ -155,7 +172,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(titles[index], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
             Text('${widget.username} • ${widget.role}', style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w600)),
-            if (_trialStatus != null)
+            if (_trialStatus != null || _licenseInfo != null)
               Text(
                 _trialLabel(),
                 style: const TextStyle(

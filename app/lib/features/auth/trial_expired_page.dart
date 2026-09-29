@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/license/license_service.dart';
 
-class TrialExpiredPage extends StatelessWidget {
+class TrialExpiredPage extends StatefulWidget {
   final DateTime expiresAt;
 
   const TrialExpiredPage({
@@ -9,11 +10,58 @@ class TrialExpiredPage extends StatelessWidget {
   });
 
   @override
+  State<TrialExpiredPage> createState() => _TrialExpiredPageState();
+}
+
+class _TrialExpiredPageState extends State<TrialExpiredPage> {
+  final _codeController = TextEditingController();
+
+  bool _loading = false;
+  String? _error;
+  String? _success;
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _activate() async {
+    final code = _codeController.text.trim();
+
+    if (code.isEmpty) {
+      setState(() => _error = 'Masukkan kode aktivasi.');
+      return;
+    }
+
+    setState(() {
+      _loading = true;
+      _error = null;
+      _success = null;
+    });
+
+    final ok = await LicenseService.saveLicense(code);
+
+    if (!mounted) return;
+
+    setState(() {
+      _loading = false;
+      if (ok) {
+        _success =
+            'Aktivasi berhasil. Silakan tutup dan buka kembali aplikasi.';
+        _codeController.clear();
+      } else {
+        _error = 'Kode aktivasi tidak valid atau sudah kedaluwarsa.';
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final expiryText =
-        '${expiresAt.day.toString().padLeft(2, '0')}/'
-        '${expiresAt.month.toString().padLeft(2, '0')}/'
-        '${expiresAt.year}';
+        '${widget.expiresAt.day.toString().padLeft(2, '0')}/'
+        '${widget.expiresAt.month.toString().padLeft(2, '0')}/'
+        '${widget.expiresAt.year}';
 
     return Scaffold(
       body: SafeArea(
@@ -45,9 +93,71 @@ class TrialExpiredPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 16),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 24),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Masukkan Kode Aktivasi',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _codeController,
+                      decoration: const InputDecoration(
+                        hintText: 'Masukkan kode aktivasi',
+                        border: OutlineInputBorder(),
+                      ),
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _activate(),
+                    ),
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: _loading ? null : _activate,
+                        icon: _loading
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.key),
+                        label: Text(
+                          _loading ? 'Memeriksa...' : 'AKTIVASI',
+                        ),
+                      ),
+                    ),
+                    if (_error != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                    if (_success != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _success!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 24),
                     const Text(
-                      'Untuk perpanjangan atau aktivasi layanan, '
+                      'Untuk mendapatkan kode aktivasi atau berlangganan, '
                       'silakan hubungi:',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -66,13 +176,9 @@ class TrialExpiredPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 18),
                     const Text(
-                      'Data aplikasi tidak dihapus. '
-                      'Gunakan aktivasi yang valid untuk melanjutkan penggunaan.',
+                      'Data aplikasi tidak dihapus.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.4,
-                      ),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ],
                 ),
