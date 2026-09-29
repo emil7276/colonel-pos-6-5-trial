@@ -190,15 +190,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
                           if (!context.mounted) return;
 
-    if (ok) {
-      final license = await LicenseService.getLicense();
-      if (!context.mounted) return;
-      setState(() {
-        _licenseInfo = license;
-      });
-    }
-
-
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
