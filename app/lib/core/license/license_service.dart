@@ -27,6 +27,8 @@ class LicenseService {
 
   static final Ed25519 _algorithm = Ed25519();
 
+  static String lastError = '';
+
   static Future<LicenseInfo?> getLicense() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_licenseKey);
@@ -50,9 +52,16 @@ class LicenseService {
   }
 
   static Future<bool> saveLicense(String licenseCode) async {
+    lastError = '';
+
     final license = await _verifyLicense(licenseCode);
 
-    if (license == null || !license.isActive) {
+    if (license == null) {
+      return false;
+    }
+
+    if (!license.isActive) {
+      lastError = 'Lisensi sudah kedaluwarsa';
       return false;
     }
 
@@ -68,6 +77,7 @@ class LicenseService {
       }),
     );
 
+    lastError = 'OK';
     return true;
   }
 
@@ -75,13 +85,17 @@ class LicenseService {
     String licenseCode,
   ) async {
     if (publicKeyBase64.isEmpty) {
+      lastError = 'PUBLIC KEY kosong';
       return null;
     }
 
     try {
-      final parts = licenseCode.trim().split('.');
+      final normalizedCode =
+          licenseCode.replaceAll(RegExp(r'\\s+'), '');
+      final parts = normalizedCode.split('.');
 
       if (parts.length != 2) {
+        lastError = 'Format kode tidak valid';
         return null;
       }
 
@@ -105,6 +119,7 @@ class LicenseService {
       );
 
       if (!valid) {
+        lastError = 'Signature tidak cocok dengan public key';
         return null;
       }
 
@@ -117,7 +132,8 @@ class LicenseService {
         issuedAt: DateTime.parse(data['issuedAt'] as String),
         expiresAt: DateTime.parse(data['expiresAt'] as String),
       );
-    } catch (_) {
+    } catch (e) {
+      lastError = 'Gagal verifikasi: $e';
       return null;
     }
   }
