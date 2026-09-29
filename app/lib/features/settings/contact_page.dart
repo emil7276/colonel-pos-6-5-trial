@@ -41,7 +41,7 @@ class ContactPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   const SelectableText(
-                    'cp_colonel_pos@gmail.com',
+                    'cp.colonel.pos@gmail.com',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 17,
