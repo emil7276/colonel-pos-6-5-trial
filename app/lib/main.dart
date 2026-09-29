@@ -10,6 +10,13 @@ Future<void> main() async {
 
   await DB.database;
 
+  final license = await LicenseService.getLicense();
+
+  if (license != null && license.isActive) {
+    runApp(const ColonelApp());
+    return;
+  }
+
   final trial = await TrialService.status();
 
   if (!trial.active) {

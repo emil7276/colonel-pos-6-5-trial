@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants.dart';
+import '../../core/license/license_service.dart';
 import '../../core/utils.dart';
 import '../../core/widgets.dart';
 import '../../data/database.dart';
@@ -138,7 +139,73 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           const SizedBox(height: 8),
-          LayoutBuilder(
+          const SizedBox(height: 4),
+                    Center(
+                      child: OutlinedButton.icon(
+                        onPressed: () async {
+                          final controller = TextEditingController();
+
+                          final code = await showDialog<String>(
+                            context: context,
+                            builder: (dialogContext) {
+                              return AlertDialog(
+                                title: const Text('Aktivasi Lisensi'),
+                                content: TextField(
+                                  controller: controller,
+                                  maxLines: 4,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Kode Aktivasi',
+                                    hintText: 'Tempel kode aktivasi di sini',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(dialogContext);
+                                    },
+                                    child: const Text('BATAL'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(
+                                        dialogContext,
+                                        controller.text.trim(),
+                                      );
+                                    },
+                                    child: const Text('AKTIVASI'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          controller.dispose();
+
+                          if (code == null || code.isEmpty || !context.mounted) {
+                            return;
+                          }
+
+                          final ok = await LicenseService.saveLicense(code);
+
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                ok
+                                    ? 'Lisensi berhasil diaktifkan. Silakan tutup dan buka kembali aplikasi.'
+                                    : 'Kode aktivasi tidak valid atau sudah kedaluwarsa.',
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.key_outlined),
+                        label: const Text('Aktivasi Lisensi'),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    LayoutBuilder(
             builder: (context, c) {
               final cross = c.maxWidth > 700 ? 4 : 2;
               return GridView.count(
