@@ -749,7 +749,7 @@ class PosPageState extends State<PosPage> {
         );
 
         final cartPanel = Card(
-          color: colors.surface,
+          color: Colors.white,
           elevation: 0,
           margin: EdgeInsets.zero,
           clipBehavior: Clip.antiAlias,
@@ -1006,9 +1006,9 @@ class PosPageState extends State<PosPage> {
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
             child: Row(
               children: [
-                Expanded(flex: 7, child: productGrid),
-                const SizedBox(width: 10),
-                Expanded(flex: 3, child: cartPanel),
+                Expanded(flex: 6, child: productGrid),
+                const SizedBox(width: 12),
+                Expanded(flex: 4, child: cartPanel),
               ],
             ),
           );
@@ -1019,7 +1019,11 @@ class PosPageState extends State<PosPage> {
           child: Column(
             children: [
               Expanded(flex: 7, child: productGrid),
-              SizedBox(height: cart.isEmpty ? 330 : 390, child: cartPanel),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: cart.isEmpty ? 250 : 285,
+                child: cartPanel,
+              ),
             ],
           ),
         );
