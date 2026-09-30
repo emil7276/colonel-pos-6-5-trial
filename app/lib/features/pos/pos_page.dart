@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -401,6 +402,10 @@ class PosPageState extends State<PosPage> {
         payment:
             result['method'] as String,
       );
+
+    final tingPlayer = AudioPlayer();
+    await tingPlayer.play(AssetSource('audio/transaction_success_ting_short.wav'));
+    Future.delayed(const Duration(milliseconds: 1200), () => tingPlayer.dispose());
 
       // Transaksi sudah berhasil tersimpan.
       // Quote tidak memengaruhi perhitungan transaksi.
