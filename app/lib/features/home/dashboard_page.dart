@@ -78,7 +78,7 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisSpacing:AppSpacing.md, crossAxisSpacing:AppSpacing.md,
               childAspectRatio:cross==4?1.95:1.55,
               children:[
-                _stat('Omzet',rp(omzet),Icons.payments_rounded,CpVisual.red),
+                _stat('Omzet',rp(omzet),Icons.payments_rounded,AppColors.red),
                 _stat('Transaksi','$transaksi',Icons.receipt_long_rounded,CpVisual.blue,onTap:showTransactions),
                 _stat('Item Terjual','$item',Icons.inventory_2_rounded,CpVisual.green,onTap:showItemsSold),
                 if(widget.role=='Administrator') _stat('Pengeluaran',rp(pengeluaran),Icons.account_balance_wallet_rounded,CpVisual.gold,onTap:()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const FinancePage())))
@@ -96,7 +96,7 @@ class _DashboardPageState extends State<DashboardPage> {
               crossAxisSpacing:AppSpacing.md, mainAxisSpacing:AppSpacing.md,
               childAspectRatio:cols==5?1.72:1.65,
               children:[
-                _quick('Penjualan',Icons.point_of_sale_rounded,'transaksi',CpVisual.red),
+                _quick('Penjualan',Icons.point_of_sale_rounded,'transaksi',AppColors.red),
                 _quick('Stok',Icons.inventory_2_rounded,'stok',CpVisual.blue),
                 _quick('Laporan',Icons.analytics_rounded,'laporan',CpVisual.purple),
                 if(widget.role=='Administrator') _quick('Admin',Icons.admin_panel_settings_rounded,'admin',CpVisual.green),
