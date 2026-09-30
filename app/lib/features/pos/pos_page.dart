@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/utils.dart';
 import '../../core/widgets.dart';
 import '../../data/database.dart';
@@ -635,7 +636,7 @@ class PosPageState extends State<PosPage> {
                   const SizedBox(width: 7),
                   Text(
                     '${filtered.length} menu',
-                    style: const TextStyle(color: colors.onSurfaceVariant, fontWeight: FontWeight.w700),
+                    style: TextStyle(color: colors.onSurfaceVariant, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
