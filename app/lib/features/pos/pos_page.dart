@@ -750,6 +750,18 @@ class PosPageState extends State<PosPage> {
 
         final cartPanel = Card(
           color: colors.surface,
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: AppColors.red.withValues(
+                alpha: Theme.of(context).brightness == Brightness.dark ? .90 : .72,
+              ),
+              width: 1.6,
+            ),
+          ),
           child: Column(
             children: [
               const ListTile(
@@ -767,10 +779,24 @@ class PosPageState extends State<PosPage> {
                     TextField(
                       controller: customerNameController,
                       textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Nama Pelanggan',
                         hintText: 'Pelanggan umum / nama pelanggan tetap',
-                        prefixIcon: Icon(Icons.person_outline_rounded),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(13),
+                          borderSide: BorderSide(
+                            color: colors.onSurfaceVariant.withValues(alpha: .42),
+                            width: 1.2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(13),
+                          borderSide: const BorderSide(
+                            color: AppColors.red,
+                            width: 1.6,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 7),
@@ -794,7 +820,12 @@ class PosPageState extends State<PosPage> {
                               fontWeight: FontWeight.w800,
                               fontSize: 12,
                             ),
-                            side: BorderSide(color: selected ? red : line),
+                            side: BorderSide(
+                              color: selected
+                                  ? AppColors.red
+                                  : colors.onSurfaceVariant.withValues(alpha: .38),
+                              width: selected ? 1.3 : 1.0,
+                            ),
                             visualDensity: VisualDensity.compact,
                           );
                         },
@@ -898,7 +929,11 @@ class PosPageState extends State<PosPage> {
                         },
                       ),
               ),
-              const Divider(height: 1),
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: AppColors.red.withValues(alpha: .28),
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 6, 10, 8),
                 child: Column(
@@ -915,13 +950,46 @@ class PosPageState extends State<PosPage> {
                     const SizedBox(height: 7),
                     Row(
                       children: [
-                        Expanded(child: OutlinedButton(onPressed: discountDialog, child: const Text('Diskon'))),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: discountDialog,
+                            icon: const Icon(Icons.sell_outlined, size: 17),
+                            label: const Text('Diskon'),
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(0, 48),
+                              side: const BorderSide(
+                                color: AppColors.red,
+                                width: 1.5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              foregroundColor: AppColors.red,
+                            ),
+                          ),
+                        ),
                         const SizedBox(width: 7),
                         Expanded(
                           flex: 2,
-                          child: FilledButton(
+                          child: FilledButton.icon(
                             onPressed: cart.isEmpty ? null : payment,
-                            child: const Text('BAYAR'),
+                            icon: const Icon(Icons.qr_code_2_rounded, size: 18),
+                            label: const Text(
+                              'BAYAR',
+                              style: TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size(0, 48),
+                              backgroundColor: AppColors.red,
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(
+                                color: AppColors.red,
+                                width: 1.5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
                           ),
                         ),
                       ],
