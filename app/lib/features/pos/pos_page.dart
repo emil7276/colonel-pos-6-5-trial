@@ -796,6 +796,7 @@ class PosPageState extends State<PosPage> {
                         prefixIcon: Icon(Icons.person_outline_rounded),
                       ),
                     ),
+                    ),
                     const SizedBox(height: 4),
                     SizedBox(
                       height: 34,
