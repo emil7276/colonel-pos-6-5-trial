@@ -34,6 +34,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/cp_logo.png
+    - assets/images/cp_header_artwork.png
 
 flutter_launcher_icons:
   android: true

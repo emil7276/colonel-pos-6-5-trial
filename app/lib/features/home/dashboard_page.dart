@@ -129,42 +129,29 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildHeader(BuildContext context, bool isDark) {
-    final top = isDark ? const Color(0xFF1A0507) : const Color(0xFFB90F18);
-    final bottom = isDark ? const Color(0xFF080B10) : const Color(0xFFD71920);
+    final base = isDark ? const Color(0xFF080A0F) : const Color(0xFFD71920);
+    final deep = isDark ? const Color(0xFF020306) : const Color(0xFF8E0710);
+    final overlay = isDark ? Colors.black.withValues(alpha: .34) : Colors.white.withValues(alpha: .06);
+    final textSecondary = Colors.white.withValues(alpha: .78);
+
     return Container(
       padding: EdgeInsets.fromLTRB(AppSpacing.lg, MediaQuery.of(context).padding.top + 18, AppSpacing.lg, 22),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [top, bottom, isDark ? AppColors.navy : AppColors.red], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        gradient: LinearGradient(colors: [base, deep, isDark ? const Color(0xFF12060A) : AppColors.red], begin: Alignment.topLeft, end: Alignment.bottomRight),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
-        boxShadow: [BoxShadow(color: isDark ? Colors.black.withValues(alpha: .35) : AppColors.red.withValues(alpha: .20), blurRadius: 22, offset: const Offset(0, 10))],
+        boxShadow: [BoxShadow(color: isDark ? Colors.black.withValues(alpha: .45) : AppColors.red.withValues(alpha: .22), blurRadius: 26, offset: const Offset(0, 12))],
       ),
       child: Stack(children: [
-        Positioned(right: -42, top: -38, child: Container(
-          width: 170, height: 170,
-          decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: .08), width: 28)),
-        )),
-        Positioned(right: 32, bottom: -65, child: Container(
-          width: 150, height: 150,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .035)),
-        )),
+        Positioned(left: -20, right: -20, top: 0, height: 138, child: IgnorePointer(child: Opacity(opacity: isDark ? .86 : .95, child: Image.asset('assets/images/cp_header_artwork.png', fit: BoxFit.cover, alignment: Alignment.center, filterQuality: FilterQuality.high)))),
+        Positioned.fill(child: IgnorePointer(child: DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(colors: [overlay, Colors.transparent, deep.withValues(alpha: .52)], begin: Alignment.topLeft, end: Alignment.bottomRight))))),
+        Positioned(right: -52, top: -48, child: Container(width: 190, height: 190, decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: .09), width: 28)))),
+        Positioned(right: 20, bottom: -72, child: Container(width: 170, height: 170, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .035)))),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .12), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: .18))),
-              child: const CpLogo(size: 52),
-            ),
+            Container(padding: const EdgeInsets.all(3), decoration: BoxDecoration(color: Colors.white.withValues(alpha: .12), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: .18))), child: const CpLogo(size: 52)),
             const SizedBox(width: AppSpacing.md),
-            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('CP POS', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .4)),
-              SizedBox(height: 2),
-              Text('Professional Point of Sale', style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600)),
-            ])),
-            IconButton(
-              onPressed: () {},
-              style: IconButton.styleFrom(backgroundColor: Colors.white.withValues(alpha: .12), foregroundColor: Colors.white),
-              icon: const Icon(Icons.notifications_none_rounded),
-            ),
+            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('CP POS', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .4)), SizedBox(height: 2), Text('Professional Point of Sale', style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600))])),
+            IconButton(onPressed: () {}, style: IconButton.styleFrom(backgroundColor: Colors.white.withValues(alpha: .12), foregroundColor: Colors.white), icon: const Icon(Icons.notifications_none_rounded)),
           ]),
           const SizedBox(height: 22),
           Text('Selamat datang, ${widget.username}', style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -.3)),
@@ -172,24 +159,11 @@ class _DashboardPageState extends State<DashboardPage> {
           Row(children: [_headerPill(Icons.person_outline_rounded, widget.role), const SizedBox(width: 8), _headerPill(Icons.verified_rounded, 'Trial 6.5')]),
           const SizedBox(height: 16),
           Row(children: [
-            const Expanded(child: Text('Kelola penjualan, stok, dan laporan dalam satu tempat.', style: TextStyle(color: Colors.white70, fontSize: 12.5, fontWeight: FontWeight.w600))),
-            FilledButton.icon(
-              onPressed: () async {
-                final uri = Uri(scheme: 'mailto', path: 'cp.colonel.pos@gmail.com', queryParameters: {'subject': 'Saya ingin menambah layanan'});
-                await launchUrl(uri);
-              },
-              style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.red, padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10), minimumSize: Size.zero),
-              icon: const Icon(Icons.workspace_premium_rounded, size: 17),
-              label: const Text('Upgrade', style: TextStyle(fontWeight: FontWeight.w900)),
-            ),
+            Expanded(child: Text('Kelola penjualan, stok, dan laporan dalam satu tempat.', style: TextStyle(color: textSecondary, fontSize: 12.5, fontWeight: FontWeight.w600))),
+            FilledButton.icon(onPressed: () async { final uri = Uri(scheme: 'mailto', path: 'cp.colonel.pos@gmail.com', queryParameters: {'subject': 'Saya ingin menambah layanan'}); await launchUrl(uri); }, style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.red, padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10), minimumSize: Size.zero), icon: const Icon(Icons.workspace_premium_rounded, size: 17), label: const Text('Upgrade', style: TextStyle(fontWeight: FontWeight.w900))),
           ]),
           const SizedBox(height: 10),
-          Align(alignment: Alignment.centerLeft, child: TextButton.icon(
-            onPressed: _activateLicense,
-            style: TextButton.styleFrom(foregroundColor: Colors.white, padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-            icon: const Icon(Icons.key_outlined, size: 16),
-            label: const Text('Aktivasi Lisensi', style: TextStyle(fontWeight: FontWeight.w800)),
-          )),
+          Align(alignment: Alignment.centerLeft, child: TextButton.icon(onPressed: _activateLicense, style: TextButton.styleFrom(foregroundColor: Colors.white, padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap), icon: const Icon(Icons.key_outlined, size: 16), label: const Text('Aktivasi Lisensi', style: TextStyle(fontWeight: FontWeight.w800)))),
         ]),
       ]),
     );
