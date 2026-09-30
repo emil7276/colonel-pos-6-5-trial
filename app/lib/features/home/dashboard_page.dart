@@ -322,10 +322,6 @@ class _DashboardPageState extends State<DashboardPage> {
     final dark=Theme.of(context).brightness==Brightness.dark;
     return Container(
       decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .62 : .32),width:1.2)),
-      clipBehavior:Clip.antiAlias,
-      child:InkWell(onTap:onTap,borderRadius:BorderRadius.circular(20),child:Padding(padding:const EdgeInsets.all(14),child:Row(children:[Container(width:45,height:45,decoration:CpVisual.iconTile(accent,dark:dark),child:Icon(icon,color:accent,size:21)),const SizedBox(width:11),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,mainAxisAlignment:MainAxisAlignment.center,children:[Text(title,maxLines:1,overflow:TextOverflow.ellipsis,style:TextStyle(color:Theme.of(context).colorScheme.onSurfaceVariant,fontSize:11,fontWeight:FontWeight.w700)),const SizedBox(height:4),FittedBox(alignment:Alignment.centerLeft,child:Text(value,style:TextStyle(fontSize:19,fontWeight:FontWeight.w900,color:accent)))])),if(onTap!=null) Icon(Icons.chevron_right_rounded,size:18,color:Theme.of(context).colorScheme.onSurfaceVariant)]))),
-    );
-  }
 
   Widget _recentSale(BuildContext context, SaleModel sale) {
     final colors = Theme.of(context).colorScheme;
