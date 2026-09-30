@@ -161,6 +161,68 @@ String _trialLabel() {
       backgroundColor: navy,
       appBar: AppBar(
         toolbarHeight: 66,
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color(0xFFB51232),
+                    Color(0xFF650D20),
+                    Color(0xFF090909),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: -40,
+              top: 16,
+              child: Transform.rotate(
+                angle: -0.45,
+                child: Container(
+                  width: 190,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.28),
+                    boxShadow: [
+                      BoxShadow(
+                        color: red.withValues(alpha: 0.55),
+                        blurRadius: 7,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: -30,
+              top: 28,
+              child: Transform.rotate(
+                angle: -0.55,
+                child: Container(
+                  width: 170,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.22),
+                    boxShadow: [
+                      BoxShadow(
+                        color: red.withValues(alpha: 0.45),
+                        blurRadius: 7,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
         titleSpacing: 8,
         leadingWidth: 58,
         leading: Padding(
@@ -252,9 +314,9 @@ String _trialLabel() {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  bg,
-                  redSoft.withValues(alpha: 0.34),
-                  const Color(0xFFEFF3F8),
+                  Color(0xFFFFFCF7),
+                  Color(0xFFF8F1EA),
+                  Color(0xFFFFF8F8),
                 ],
               ),
             ),
