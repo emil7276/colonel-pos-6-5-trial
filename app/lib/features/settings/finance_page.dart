@@ -314,6 +314,8 @@ class _FinancePageState extends State<FinancePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showExpenseDialog(),
+        backgroundColor: red,
+        foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Pengeluaran'),
       ),
@@ -391,6 +393,7 @@ class _FinancePageState extends State<FinancePage> {
               ],
             ),
 
+            const SizedBox(height: 8),
             Card(
               child: ListTile(
                 leading: const Icon(

@@ -158,6 +158,10 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             width: double.infinity,
                             child: FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: red,
+                                foregroundColor: Colors.white,
+                              ),
                               onPressed: login,
                               icon: const Icon(Icons.login_rounded),
                               label: const Text('MASUK'),

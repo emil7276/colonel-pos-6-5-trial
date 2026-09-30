@@ -775,8 +775,8 @@ class PosPageState extends State<PosPage> {
               const ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                leading: Icon(Icons.shopping_cart_rounded, color: gold, size: 20),
-                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, color: gold)),
+                leading: Icon(Icons.shopping_cart_rounded, color: red, size: 20),
+                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, color: red)),
               ),
 
               Padding(
@@ -927,6 +927,8 @@ class PosPageState extends State<PosPage> {
                           child: FilledButton(
                             onPressed: cart.isEmpty ? null : payment,
                             style: FilledButton.styleFrom(
+                              backgroundColor: red,
+                              foregroundColor: Colors.white,
                               shadowColor: red.withValues(alpha: 0.72),
                               elevation: 9,
                             ),
