@@ -318,6 +318,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
     );
+  }
   Widget _recentSale(BuildContext context, SaleModel sale) {
     final colors = Theme.of(context).colorScheme;
     return Card(
