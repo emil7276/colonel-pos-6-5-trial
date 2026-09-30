@@ -270,7 +270,7 @@ class _DashboardPageState extends State<DashboardPage> {
       Text(title, style: const TextStyle(fontWeight: FontWeight.w900)),
       const SizedBox(height: 4),
       Text(subtitle, textAlign: TextAlign.center, style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12)),
-    ]));
+    ])));
   }
 
   Future<void> _activateLicense() async {
