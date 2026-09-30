@@ -137,7 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
-        MediaQuery.of(context).padding.top + 80,
+        20,
         AppSpacing.lg,
         18,
       ),
@@ -437,7 +437,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   borderRadius: BorderRadius.circular(13),
                   border: Border.all(
-                    color: AppColors.red.withValues(alpha: .10),
+                    color: AppColors.red.withValues(alpha: .24),
                   ),
                 ),
                 child: Icon(icon, color: AppColors.red, size: 20),
@@ -519,8 +519,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: primary
-                            ? AppColors.red.withValues(alpha: .12)
-                            : colors.onSurface.withValues(alpha: .05),
+                            ? AppColors.red.withValues(alpha: .28)
+                            : colors.onSurface.withValues(alpha: .18),
                       ),
                     ),
                     child: Icon(

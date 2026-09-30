@@ -162,13 +162,30 @@ String _trialLabel() {
     final theme = Theme.of(context);
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 66,
+        flexibleSpace: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDark
+                  ? const [Color(0xFF090B10), Color(0xFF17080D), Color(0xFF030407)]
+                  : const [Color(0xFFD71920), Color(0xFFB90F18), Color(0xFF78060C)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border(
+              bottom: BorderSide(
+                color: AppColors.red.withValues(alpha: isDark ? .32 : .18),
+                width: 1,
+              ),
+            ),
+          ),
+        ),
         titleSpacing: 8,
         leadingWidth: 58,
         leading: Padding(

@@ -10,12 +10,12 @@ abstract final class AppColors {
   static const surfaceLight = Color(0xFFFFFFFF);
   static const inkLight = Color(0xFF171719);
   static const mutedLight = Color(0xFF6F7177);
-  static const lineLight = Color(0xFFE4E6EA);
+  static const lineLight = Color(0xFFD2D7DF);
 
   static const bgDark = Color(0xFF0B1017);
   static const surfaceDark = Color(0xFF121A24);
   static const surfaceDark2 = Color(0xFF18222E);
   static const inkDark = Color(0xFFF5F7FA);
   static const mutedDark = Color(0xFFAAB2BD);
-  static const lineDark = Color(0xFF283341);
+  static const lineDark = Color(0xFF344352);
 }
