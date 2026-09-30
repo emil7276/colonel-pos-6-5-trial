@@ -6,6 +6,7 @@ import '../../core/license/license_service.dart';
 import '../../core/widgets.dart';
 import '../../core/theme/theme_controller.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/cp_visual.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
 import '../reports/report_page.dart';
@@ -170,23 +171,43 @@ String _trialLabel() {
         foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        toolbarHeight: 66,
-        flexibleSpace: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isDark
-                  ? const [Color(0xFF090B10), Color(0xFF17080D), Color(0xFF030407)]
-                  : const [Color(0xFFD71920), Color(0xFFB90F18), Color(0xFF78060C)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            border: Border(
-              bottom: BorderSide(
-                color: AppColors.red.withValues(alpha: isDark ? .32 : .18),
-                width: 1,
+        toolbarHeight: 112,
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: CpVisual.redGradient(dark: isDark),
               ),
             ),
-          ),
+            Opacity(
+              opacity: isDark ? .18 : .10,
+              child: Image.asset(
+                'assets/images/cp_header_artwork.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.centerRight,
+              ),
+            ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.black.withValues(alpha: isDark ? .46 : .24),
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: isDark ? .34 : .16),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppColors.red.withValues(alpha: isDark ? .72 : .42),
+                    width: 1.2,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         titleSpacing: 8,
         leadingWidth: 58,
@@ -197,7 +218,7 @@ String _trialLabel() {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(titles[index], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+            Text(index == 0 ? 'CP POS' : titles[index], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .2)),
             Text('${widget.username} • ${widget.role}', style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w600)),
             if (_trialStatus != null || _licenseInfo != null)
               Text(
