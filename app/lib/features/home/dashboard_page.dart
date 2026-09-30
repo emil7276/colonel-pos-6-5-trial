@@ -142,6 +142,10 @@ class _DashboardPageState extends State<DashboardPage> {
         18,
       ),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.red.withValues(alpha: isDark ? .38 : .22),
+          width: 1,
+        ),
         gradient: LinearGradient(
           colors: [base, mid, deep],
           begin: Alignment.topLeft,
@@ -167,14 +171,31 @@ class _DashboardPageState extends State<DashboardPage> {
             left: -18,
             right: -18,
             top: -2,
-            height: 142,
+            height: 176,
             child: IgnorePointer(
               child: Opacity(
-                opacity: isDark ? .16 : .22,
+                opacity: isDark ? .12 : .16,
                 child: Image.asset(
                   'assets/images/cp_header_artwork.png',
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: -6,
+            bottom: -4,
+            width: 154,
+            height: 154,
+            child: IgnorePointer(
+              child: Opacity(
+                opacity: isDark ? .92 : .94,
+                child: Image.asset(
+                  'assets/images/cp_pos_header_illustration.png',
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomRight,
                   filterQuality: FilterQuality.high,
                 ),
               ),

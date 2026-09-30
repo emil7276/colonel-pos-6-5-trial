@@ -410,7 +410,7 @@ class PosPageState extends State<PosPage> {
       // Bunyi hanya dipicu setelah DB.createSale() sukses.
       try {
         await _successPlayer.play(
-          AssetSource('audio/transaction_success.wav'),
+          AssetSource('audio/transaction_success_premium.wav'),
           volume: 0.32,
         );
       } catch (_) {
@@ -600,6 +600,8 @@ class PosPageState extends State<PosPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final accentSoft = AppColors.red.withValues(alpha: .12);
     final filtered = category == 'Semua'
         ? products
         : products.where((p) => p.category == category).toList();
@@ -633,7 +635,7 @@ class PosPageState extends State<PosPage> {
                   const SizedBox(width: 7),
                   Text(
                     '${filtered.length} menu',
-                    style: const TextStyle(color: inkMuted, fontWeight: FontWeight.w700),
+                    style: const TextStyle(color: colors.onSurfaceVariant, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -695,7 +697,7 @@ class PosPageState extends State<PosPage> {
                 itemBuilder: (_, i) {
                   final p = filtered[i];
                   return Card(
-                    color: Colors.white,
+                    color: colors.surface,
                     clipBehavior: Clip.antiAlias,
                     child: InkWell(
                       onTap: () => add(p),
@@ -708,7 +710,7 @@ class PosPageState extends State<PosPage> {
                               width: 34,
                               height: 34,
                               decoration: BoxDecoration(
-                                color: redSoft,
+                                color: accentSoft,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Icon(Icons.fastfood_rounded, size: 19, color: red),
@@ -746,7 +748,7 @@ class PosPageState extends State<PosPage> {
         );
 
         final cartPanel = Card(
-          color: Colors.white,
+          color: colors.surface,
           child: Column(
             children: [
               const ListTile(
@@ -802,7 +804,56 @@ class PosPageState extends State<PosPage> {
               ),
               Expanded(
                 child: cart.isEmpty
-                    ? const Center(child: Text('Belum ada item'))
+                    ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 82,
+                            height: 82,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.red.withValues(alpha: .15),
+                                  AppColors.red.withValues(alpha: .035),
+                                ],
+                              ),
+                              border: Border.all(
+                                color: AppColors.red.withValues(alpha: .16),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.phone_iphone_rounded,
+                              size: 38,
+                              color: AppColors.red.withValues(alpha: .72),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Belum ada item',
+                            style: TextStyle(
+                              color: colors.onSurface,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Tambahkan produk untuk memulai transaksi',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: colors.onSurfaceVariant,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                     : ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: cart.length,
