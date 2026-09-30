@@ -5,6 +5,7 @@ import '../../core/trial_service.dart';
 import '../../core/license/license_service.dart';
 import '../../core/widgets.dart';
 import '../../core/theme/theme_controller.dart';
+import '../../core/theme/app_colors.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
 import '../reports/report_page.dart';
@@ -160,6 +161,7 @@ String _trialLabel() {
     ];
 
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
