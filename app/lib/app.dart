@@ -18,7 +18,7 @@ class ColonelApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: scheme,
-        scaffoldBackgroundColor: bg,
+        scaffoldBackgroundColor: pageBg,
         fontFamily: 'sans-serif-condensed',
         visualDensity: VisualDensity.standard,
         textTheme: const TextTheme(
@@ -49,7 +49,7 @@ class ColonelApp extends StatelessWidget {
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: line),
+            side: const BorderSide(color: boxBorder),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(

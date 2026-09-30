@@ -694,11 +694,11 @@ class PosPageState extends State<PosPage> {
                   return Card(
                     color: Colors.white,
                     elevation: 5,
-                    shadowColor: red.withValues(alpha: 0.28),
+                    shadowColor: boxBorder.withValues(alpha: 0.45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
                       side: BorderSide(
-                        color: red.withValues(alpha: 0.42),
+                        color: boxBorder,
                         width: 1,
                       ),
                     ),
@@ -754,11 +754,11 @@ class PosPageState extends State<PosPage> {
         final cartPanel = Card(
           color: Colors.white,
           elevation: 6,
-          shadowColor: navy.withValues(alpha: 0.30),
+          shadowColor: red.withValues(alpha: 0.38),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
-              color: navy.withValues(alpha: 0.36),
+              color: red.withValues(alpha: 0.90),
               width: 1,
             ),
           ),

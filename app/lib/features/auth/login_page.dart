@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFFFF1F1), bg],
+            colors: [pageBg, pageBg],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -117,6 +117,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 22),
                   Card(
+                    color: Colors.white,
+                    elevation: 6,
+                    shadowColor: red.withValues(alpha: 0.35),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: const BorderSide(color: red, width: 1.2),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(22),
                       child: Column(

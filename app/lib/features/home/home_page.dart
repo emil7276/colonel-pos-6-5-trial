@@ -314,9 +314,9 @@ String _trialLabel() {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFFFFFCF7),
-                  Color(0xFFF8F1EA),
-                  Color(0xFFFFF8F8),
+                  pageBg,
+                  pageBg,
+                  pageBg,
                 ],
               ),
             ),
