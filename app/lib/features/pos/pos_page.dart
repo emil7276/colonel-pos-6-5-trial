@@ -760,13 +760,13 @@ class PosPageState extends State<PosPage> {
         );
 
         final cartPanel = Card(
-          color: goldPanel,
+          color: Colors.white,
           elevation: 8,
           shadowColor: gold.withValues(alpha: 0.48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
-              color: gold.withValues(alpha: 0.95),
+              color: red.withValues(alpha: 0.45),
               width: 1.2,
             ),
           ),
