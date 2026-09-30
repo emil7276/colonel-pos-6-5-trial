@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants.dart';
 import '../../core/utils.dart';
@@ -23,6 +24,7 @@ class PosPage extends StatefulWidget {
       PosPageState();
 }
 class PosPageState extends State<PosPage> {
+  final AudioPlayer _successPlayer = AudioPlayer();
   List<Product> products = [];
   final List<CartLine> cart = [];
 
@@ -32,7 +34,9 @@ class PosPageState extends State<PosPage> {
   final TextEditingController customerNameController = TextEditingController();
 
   @override
+  @override
   void dispose() {
+    _successPlayer.dispose();
     customerNameController.dispose();
     super.dispose();
   }
@@ -403,6 +407,16 @@ class PosPageState extends State<PosPage> {
       );
 
       // Transaksi sudah berhasil tersimpan.
+      // Bunyi hanya dipicu setelah DB.createSale() sukses.
+      try {
+        await _successPlayer.play(
+          AssetSource('audio/transaction_success.wav'),
+          volume: 0.32,
+        );
+      } catch (_) {
+        // Audio gagal tidak boleh menggagalkan transaksi.
+      }
+
       // Quote tidak memengaruhi perhitungan transaksi.
       try {
         final quote = await QuoteService.nextQuote();

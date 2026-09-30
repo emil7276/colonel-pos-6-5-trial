@@ -129,43 +129,251 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildHeader(BuildContext context, bool isDark) {
-    final base = isDark ? const Color(0xFF080A0F) : const Color(0xFFD71920);
-    final deep = isDark ? const Color(0xFF020306) : const Color(0xFF8E0710);
-    final overlay = isDark ? Colors.black.withValues(alpha: .34) : Colors.white.withValues(alpha: .06);
-    final textSecondary = Colors.white.withValues(alpha: .78);
+    final base = isDark ? const Color(0xFF090B10) : const Color(0xFFD71920);
+    final mid = isDark ? const Color(0xFF17080D) : const Color(0xFFB90F18);
+    final deep = isDark ? const Color(0xFF030407) : const Color(0xFF78060C);
+    final secondary = Colors.white.withValues(alpha: .78);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(AppSpacing.lg, MediaQuery.of(context).padding.top + 18, AppSpacing.lg, 22),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [base, deep, isDark ? const Color(0xFF12060A) : AppColors.red], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
-        boxShadow: [BoxShadow(color: isDark ? Colors.black.withValues(alpha: .45) : AppColors.red.withValues(alpha: .22), blurRadius: 26, offset: const Offset(0, 12))],
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        MediaQuery.of(context).padding.top + 14,
+        AppSpacing.lg,
+        18,
       ),
-      child: Stack(children: [
-        Positioned(left: -20, right: -20, top: 0, height: 138, child: IgnorePointer(child: Opacity(opacity: isDark ? .86 : .95, child: Image.asset('assets/images/cp_header_artwork.png', fit: BoxFit.cover, alignment: Alignment.center, filterQuality: FilterQuality.high)))),
-        Positioned.fill(child: IgnorePointer(child: DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(colors: [overlay, Colors.transparent, deep.withValues(alpha: .52)], begin: Alignment.topLeft, end: Alignment.bottomRight))))),
-        Positioned(right: -52, top: -48, child: Container(width: 190, height: 190, decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: .09), width: 28)))),
-        Positioned(right: 20, bottom: -72, child: Container(width: 170, height: 170, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .035)))),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Container(padding: const EdgeInsets.all(3), decoration: BoxDecoration(color: Colors.white.withValues(alpha: .12), borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white.withValues(alpha: .18))), child: const CpLogo(size: 52)),
-            const SizedBox(width: AppSpacing.md),
-            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('CP POS', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .4)), SizedBox(height: 2), Text('Professional Point of Sale', style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600))])),
-            IconButton(onPressed: () {}, style: IconButton.styleFrom(backgroundColor: Colors.white.withValues(alpha: .12), foregroundColor: Colors.white), icon: const Icon(Icons.notifications_none_rounded)),
-          ]),
-          const SizedBox(height: 22),
-          Text('Selamat datang, ${widget.username}', style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -.3)),
-          const SizedBox(height: 6),
-          Row(children: [_headerPill(Icons.person_outline_rounded, widget.role), const SizedBox(width: 8), _headerPill(Icons.verified_rounded, 'Trial 6.5')]),
-          const SizedBox(height: 16),
-          Row(children: [
-            Expanded(child: Text('Kelola penjualan, stok, dan laporan dalam satu tempat.', style: TextStyle(color: textSecondary, fontSize: 12.5, fontWeight: FontWeight.w600))),
-            FilledButton.icon(onPressed: () async { final uri = Uri(scheme: 'mailto', path: 'cp.colonel.pos@gmail.com', queryParameters: {'subject': 'Saya ingin menambah layanan'}); await launchUrl(uri); }, style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.red, padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10), minimumSize: Size.zero), icon: const Icon(Icons.workspace_premium_rounded, size: 17), label: const Text('Upgrade', style: TextStyle(fontWeight: FontWeight.w900))),
-          ]),
-          const SizedBox(height: 10),
-          Align(alignment: Alignment.centerLeft, child: TextButton.icon(onPressed: _activateLicense, style: TextButton.styleFrom(foregroundColor: Colors.white, padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap), icon: const Icon(Icons.key_outlined, size: 16), label: const Text('Aktivasi Lisensi', style: TextStyle(fontWeight: FontWeight.w800)))),
-        ]),
-      ]),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [base, mid, deep],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [0, .52, 1],
+        ),
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(28),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: .55)
+                : AppColors.red.withValues(alpha: .20),
+            blurRadius: 28,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: -18,
+            right: -18,
+            top: -2,
+            height: 142,
+            child: IgnorePointer(
+              child: Opacity(
+                opacity: isDark ? .16 : .22,
+                child: Image.asset(
+                  'assets/images/cp_header_artwork.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withValues(alpha: isDark ? .12 : .02),
+                      Colors.transparent,
+                      deep.withValues(alpha: .72),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: -70,
+            top: -72,
+            child: Container(
+              width: 210,
+              height: 210,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: .08),
+                  width: 26,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 12,
+            bottom: -90,
+            child: Container(
+              width: 190,
+              height: 190,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: .025),
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .10),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: .16),
+                      ),
+                    ),
+                    child: const CpLogo(size: 50),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'CP POS',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: .5,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Professional Point of Sale',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .10),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: .12),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.notifications_none_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              Text(
+                'Selamat datang, ${widget.username}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 21,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -.3,
+                ),
+              ),
+              const SizedBox(height: 7),
+              Row(
+                children: [
+                  _headerPill(Icons.person_outline_rounded, widget.role),
+                  const SizedBox(width: 7),
+                  _headerPill(Icons.verified_rounded, 'Trial 6.5'),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Kelola penjualan, stok, dan laporan dalam satu tempat.',
+                      style: TextStyle(
+                        color: secondary,
+                        fontSize: 12.5,
+                        height: 1.3,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  FilledButton.icon(
+                    onPressed: () async {
+                      final uri = Uri(
+                        scheme: 'mailto',
+                        path: 'cp.colonel.pos@gmail.com',
+                        queryParameters: {
+                          'subject': 'Saya ingin menambah layanan',
+                        },
+                      );
+                      await launchUrl(uri);
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.red,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 13,
+                        vertical: 10,
+                      ),
+                      minimumSize: Size.zero,
+                    ),
+                    icon: const Icon(
+                      Icons.workspace_premium_rounded,
+                      size: 17,
+                    ),
+                    label: const Text(
+                      'Upgrade',
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: _activateLicense,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  icon: const Icon(Icons.key_outlined, size: 16),
+                  label: const Text(
+                    'Aktivasi Lisensi',
+                    style: TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -192,32 +400,164 @@ class _DashboardPageState extends State<DashboardPage> {
         onTap: () => widget.onQuickAccess?.call(action),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-          child: Row(children: [
-            Container(width: 42, height: 42, decoration: BoxDecoration(color: colors.primary.withValues(alpha: .10), borderRadius: BorderRadius.circular(13)), child: Icon(icon, color: AppColors.red, size: 20)),
-            const SizedBox(width: 11),
-            Expanded(child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800))),
-            Icon(Icons.chevron_right_rounded, size: 20, color: colors.onSurfaceVariant),
-          ]),
+          child: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.red.withValues(alpha: .16),
+                      AppColors.red.withValues(alpha: .06),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(13),
+                  border: Border.all(
+                    color: AppColors.red.withValues(alpha: .10),
+                  ),
+                ),
+                child: Icon(icon, color: AppColors.red, size: 20),
+              ),
+              const SizedBox(width: 11),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: colors.onSurfaceVariant,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _stat(String title, String value, IconData icon, bool primary, {VoidCallback? onTap}) {
+  Widget _stat(
+    String title,
+    String value,
+    IconData icon,
+    bool primary, {
+    VoidCallback? onTap,
+  }) {
     final colors = Theme.of(context).colorScheme;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLg), onTap: onTap,
-        child: Padding(padding: const EdgeInsets.all(13), child: Row(children: [
-          Container(width: 42, height: 42, decoration: BoxDecoration(color: primary ? AppColors.red.withValues(alpha: .12) : colors.onSurface.withValues(alpha: .055), borderRadius: BorderRadius.circular(13)), child: Icon(icon, color: primary ? AppColors.red : colors.onSurface, size: 20)),
-          const SizedBox(width: 10),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-            Row(children: [Expanded(child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: colors.onSurfaceVariant, fontSize: 11, fontWeight: FontWeight.w700))), if (onTap != null) Icon(Icons.chevron_right_rounded, size: 17, color: colors.onSurfaceVariant)]),
-            const SizedBox(height: 3),
-            FittedBox(alignment: Alignment.centerLeft, child: Text(value, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: primary ? AppColors.red : colors.onSurface))),
-          ])),
-        ])),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        onTap: onTap,
+        child: Stack(
+          children: [
+            Positioned(
+              right: -28,
+              top: -34,
+              child: Container(
+                width: 92,
+                height: 92,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.red.withValues(
+                    alpha: primary ? .055 : .025,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: primary
+                            ? [
+                                AppColors.red.withValues(alpha: .18),
+                                AppColors.red.withValues(alpha: .06),
+                              ]
+                            : [
+                                colors.onSurface.withValues(alpha: .065),
+                                colors.onSurface.withValues(alpha: .025),
+                              ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: primary
+                            ? AppColors.red.withValues(alpha: .12)
+                            : colors.onSurface.withValues(alpha: .05),
+                      ),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: primary ? AppColors.red : colors.onSurface,
+                      size: 21,
+                    ),
+                  ),
+                  const SizedBox(width: 11),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: colors.onSurfaceVariant,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            if (onTap != null)
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                size: 17,
+                                color: colors.onSurfaceVariant,
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        FittedBox(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w900,
+                              color: primary
+                                  ? AppColors.red
+                                  : colors.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

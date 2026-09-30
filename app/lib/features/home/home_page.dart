@@ -159,8 +159,10 @@ String _trialLabel() {
       if (widget.role == 'Administrator') 'Keuangan',
     ];
 
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: navy,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         toolbarHeight: 66,
         titleSpacing: 8,
@@ -251,7 +253,7 @@ String _trialLabel() {
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           child: Container(
-            color: bg,
+            color: theme.scaffoldBackgroundColor,
             child: Stack(
               children: [
                 Positioned.fill(
