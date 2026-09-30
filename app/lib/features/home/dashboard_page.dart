@@ -165,16 +165,160 @@ class _DashboardPageState extends State<DashboardPage> {
     Container(width:7,height:7,decoration:const BoxDecoration(color:AppColors.red,shape:BoxShape.circle)),
   ]);
 
-  Widget _quick(String title,IconData icon,String action,Color accent){
-    final dark=Theme.of(context).brightness==Brightness.dark;
+  Widget _quick(String title, IconData icon, String action, Color accent) {
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
+    final surface = dark ? CpVisual.darkSurface : CpVisual.lightSurface;
+
     return Container(
-      decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .60 : .32),width:1.2)),
-      clipBehavior:Clip.antiAlias,
-      child:InkWell(onTap:()=>widget.onQuickAccess?.call(action),child:Padding(padding:const EdgeInsets.all(13),child:Column(crossAxisAlignment:CrossAxisAlignment.start,mainAxisAlignment:MainAxisAlignment.center,children:[Container(width:45,height:45,decoration:CpVisual.iconTile(accent,dark:dark),child:Icon(icon,color:accent,size:21)),const SizedBox(height:10),Text(title,style:const TextStyle(fontSize:13.5,fontWeight:FontWeight.w900))]))),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            accent.withValues(alpha: dark ? .16 : .045),
+            surface,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: accent.withValues(alpha: dark ? .78 : .34),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: dark ? .20 : .08),
+            blurRadius: dark ? 18 : 10,
+            spreadRadius: dark ? 1 : 0,
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: () => widget.onQuickAccess?.call(action),
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(13),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 45,
+                height: 45,
+                decoration: CpVisual.iconTile(accent, dark: dark),
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 21,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface,
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _stat(String title,String value,IconData icon,Color accent,{VoidCallback? onTap}){
+  Widget _stat(
+    String title,
+    String value,
+    IconData icon,
+    Color accent, {
+    VoidCallback? onTap,
+  }) {
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
+    final surface = dark ? CpVisual.darkSurface : CpVisual.lightSurface;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            accent.withValues(alpha: dark ? .15 : .035),
+            surface,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: accent.withValues(alpha: dark ? .78 : .34),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: dark ? .20 : .08),
+            blurRadius: dark ? 18 : 10,
+            spreadRadius: dark ? 1 : 0,
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 45,
+                height: 45,
+                decoration: CpVisual.iconTile(accent, dark: dark),
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 21,
+                ),
+              ),
+              const SizedBox(width: 11),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (onTap != null)
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }){
     final dark=Theme.of(context).brightness==Brightness.dark;
     return Container(
       decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .62 : .32),width:1.2)),

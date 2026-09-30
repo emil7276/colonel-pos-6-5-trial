@@ -814,9 +814,15 @@ class PosPageState extends State<PosPage> {
                             label: Text(type),
                             selected: selected,
                             onSelected: (_) => setState(() => customerType = type),
-                            selectedColor: redSoft,
+                            selectedColor: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.red.withValues(alpha: .22)
+                                : redSoft,
                             labelStyle: TextStyle(
-                              color: selected ? red : ink,
+                              color: selected
+                                  ? (Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.white
+                                      : red)
+                                  : Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.w800,
                               fontSize: 12,
                             ),
@@ -1006,9 +1012,9 @@ class PosPageState extends State<PosPage> {
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
             child: Row(
               children: [
-                Expanded(flex: 6, child: productGrid),
-                const SizedBox(width: 12),
-                Expanded(flex: 4, child: cartPanel),
+                Expanded(flex: 7, child: productGrid),
+                const SizedBox(width: 10),
+                Expanded(flex: 3, child: cartPanel),
               ],
             ),
           );
@@ -1019,9 +1025,8 @@ class PosPageState extends State<PosPage> {
           child: Column(
             children: [
               Expanded(flex: 7, child: productGrid),
-              const SizedBox(height: 10),
               SizedBox(
-                height: cart.isEmpty ? 250 : 285,
+                height: cart.isEmpty ? 330 : 390,
                 child: cartPanel,
               ),
             ],
