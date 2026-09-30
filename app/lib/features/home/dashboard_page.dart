@@ -4,11 +4,13 @@ import '../../core/constants.dart';
 import '../../core/license/license_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/cp_visual.dart';
 import '../../core/utils.dart';
 import '../../core/widgets.dart';
 import '../../data/database.dart';
 import '../../models/models.dart';
 import '../settings/finance_page.dart';
+import '../settings/settings_page.dart';
 
 class DashboardPage extends StatefulWidget {
   final String username;
@@ -57,529 +59,127 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  @override Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  @override
+  Widget build(BuildContext context) {
     return RefreshIndicator(
       color: AppColors.red,
       onRefresh: load,
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.xxxl),
         children: [
-          _buildHeader(context, isDark),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.xxxl),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              _sectionTitle('Ringkasan Hari Ini', 'Performa penjualan hari ini'),
-              const SizedBox(height: AppSpacing.md),
-              LayoutBuilder(builder: (context, c) {
-                final cross = c.maxWidth >= 900 ? 4 : 2;
-                return GridView.count(
-                  crossAxisCount: cross, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: AppSpacing.md, crossAxisSpacing: AppSpacing.md,
-                  childAspectRatio: cross == 4 ? 1.9 : 1.55,
-                  children: [
-                    _stat('Omzet', rp(omzet), Icons.payments_rounded, true),
-                    _stat('Transaksi', '$transaksi', Icons.receipt_long_rounded, false, onTap: showTransactions),
-                    _stat('Item Terjual', '$item', Icons.inventory_2_rounded, false, onTap: showItemsSold),
-                    if (widget.role == 'Administrator')
-                      _stat('Pengeluaran', rp(pengeluaran), Icons.account_balance_wallet_rounded, false, onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const FinancePage()));
-                      })
-                    else
-                      _stat('Status', 'V6.5.0', Icons.verified_rounded, false),
-                  ],
-                );
-              }),
-              const SizedBox(height: AppSpacing.xxxl),
-              _sectionTitle('Akses Cepat', 'Fitur yang sering digunakan'),
-              const SizedBox(height: AppSpacing.md),
-              LayoutBuilder(builder: (context, c) {
-                final cols = c.maxWidth >= 900 ? 4 : 2;
-                return GridView.count(
-                  crossAxisCount: cols, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: AppSpacing.md, mainAxisSpacing: AppSpacing.md,
-                  childAspectRatio: cols == 4 ? 2.15 : 1.9,
-                  children: [
-                    _quick('Transaksi Baru', Icons.point_of_sale_rounded, 'transaksi'),
-                    _quick('Laporan', Icons.analytics_rounded, 'laporan'),
-                    if (widget.role == 'Administrator') _quick('Produk', Icons.restaurant_menu_rounded, 'produk'),
-                    if (widget.role == 'Administrator') _quick('Printer', Icons.print_rounded, 'printer'),
-                  ],
-                );
-              }),
-              const SizedBox(height: AppSpacing.xxxl),
-              _sectionTitle('Transaksi Terbaru', '5 transaksi terakhir'),
-              const SizedBox(height: AppSpacing.md),
-              if (recent.isEmpty)
-                _emptyState(Icons.receipt_long_rounded, 'Belum ada transaksi', 'Transaksi terbaru akan muncul di sini.')
-              else
-                ...recent.map((s) => _recentSale(context, s)),
-              const SizedBox(height: AppSpacing.md),
-              Center(child: TextButton.icon(
-                onPressed: showTransactions,
-                icon: const Icon(Icons.arrow_forward_rounded, size: 17),
-                label: const Text('Lihat semua transaksi'),
-              )),
-              const CopyrightFooter(),
+          _masterWelcome(context),
+          const SizedBox(height: AppSpacing.xl),
+          _sectionTitle('Ringkasan Hari Ini', 'Performa penjualan hari ini'),
+          const SizedBox(height: AppSpacing.md),
+          LayoutBuilder(builder: (context,c) {
+            final cross=c.maxWidth>=900?4:2;
+            return GridView.count(
+              crossAxisCount:cross, shrinkWrap:true, physics:const NeverScrollableScrollPhysics(),
+              mainAxisSpacing:AppSpacing.md, crossAxisSpacing:AppSpacing.md,
+              childAspectRatio:cross==4?1.95:1.55,
+              children:[
+                _stat('Omzet',rp(omzet),Icons.payments_rounded,CpVisual.red),
+                _stat('Transaksi','$transaksi',Icons.receipt_long_rounded,CpVisual.blue,onTap:showTransactions),
+                _stat('Item Terjual','$item',Icons.inventory_2_rounded,CpVisual.green,onTap:showItemsSold),
+                if(widget.role=='Administrator') _stat('Pengeluaran',rp(pengeluaran),Icons.account_balance_wallet_rounded,CpVisual.gold,onTap:()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const FinancePage())))
+                else _stat('Status','V6.5.0',Icons.verified_rounded,CpVisual.cyan),
+              ],
+            );
+          }),
+          const SizedBox(height:AppSpacing.xl),
+          _sectionTitle('Akses Cepat','Fitur utama CP POS'),
+          const SizedBox(height:AppSpacing.md),
+          LayoutBuilder(builder:(context,c){
+            final cols=c.maxWidth>=1100?5:(c.maxWidth>=700?3:2);
+            return GridView.count(
+              crossAxisCount:cols, shrinkWrap:true, physics:const NeverScrollableScrollPhysics(),
+              crossAxisSpacing:AppSpacing.md, mainAxisSpacing:AppSpacing.md,
+              childAspectRatio:cols==5?1.72:1.65,
+              children:[
+                _quick('Penjualan',Icons.point_of_sale_rounded,'transaksi',CpVisual.red),
+                _quick('Stok',Icons.inventory_2_rounded,'stok',CpVisual.blue),
+                _quick('Laporan',Icons.analytics_rounded,'laporan',CpVisual.purple),
+                if(widget.role=='Administrator') _quick('Admin',Icons.admin_panel_settings_rounded,'admin',CpVisual.green),
+                if(widget.role=='Administrator') _quick('Keuangan',Icons.account_balance_wallet_rounded,'keuangan',CpVisual.gold),
+              ],
+            );
+          }),
+          const SizedBox(height:AppSpacing.xl),
+          _sectionTitle('Transaksi Terbaru','5 transaksi terakhir'),
+          const SizedBox(height:AppSpacing.md),
+          if(recent.isEmpty) _emptyState(Icons.receipt_long_rounded,'Belum ada transaksi','Transaksi terbaru akan muncul di sini.') else ...recent.map((s)=>_recentSale(context,s)),
+          const SizedBox(height:AppSpacing.md),
+          Center(child:TextButton.icon(onPressed:showTransactions,icon:const Icon(Icons.arrow_forward_rounded,size:17),label:const Text('Lihat semua transaksi'))),
+          const CopyrightFooter(),
+        ],
+      ),
+    );
+  }
+
+  Widget _masterWelcome(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(minHeight:238),
+      decoration:BoxDecoration(
+        gradient:const LinearGradient(begin:Alignment.topLeft,end:Alignment.bottomRight,colors:[Color(0xFF31080D),Color(0xFF0B0D12),Color(0xFF090C12)]),
+        borderRadius:BorderRadius.circular(24),
+        border:Border.all(color:AppColors.red.withValues(alpha:.72),width:1.2),
+        boxShadow:[BoxShadow(color:AppColors.red.withValues(alpha:.20),blurRadius:24,spreadRadius:-8)],
+      ),
+      clipBehavior:Clip.antiAlias,
+      child:Stack(children:[
+        Positioned(right:-8,bottom:-6,child:Image.asset('assets/images/cp_pos_header_illustration.png',width:300,height:205,fit:BoxFit.contain)),
+        Positioned(top:14,right:14,child:Container(width:40,height:40,decoration:BoxDecoration(color:Colors.white.withValues(alpha:.10),shape:BoxShape.circle,border:Border.all(color:Colors.white.withValues(alpha:.16))),child:const Icon(Icons.notifications_none_rounded,color:Colors.white,size:21))),
+        Padding(
+          padding:const EdgeInsets.fromLTRB(20,18,20,16),
+          child:ConstrainedBox(
+            constraints:const BoxConstraints(maxWidth:560),
+            child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
+              Row(children:[const CpLogo(size:42),const SizedBox(width:10),const Text('CP POS',style:TextStyle(color:Colors.white,fontSize:18,fontWeight:FontWeight.w900)),const SizedBox(width:8),const Text('Professional Point of Sale',style:TextStyle(color:Colors.white70,fontSize:11.5,fontWeight:FontWeight.w700))]),
+              const SizedBox(height:24),
+              Text('Selamat datang, ${widget.username}',style:const TextStyle(color:Colors.white,fontSize:24,fontWeight:FontWeight.w900)),
+              const SizedBox(height:9),
+              Wrap(spacing:8,runSpacing:7,children:[_headerPill(Icons.person_outline_rounded,widget.role),_headerPill(Icons.workspace_premium_outlined,'Trial 6.5')]),
+              const SizedBox(height:10),
+              const SizedBox(width:430,child:Text('Kelola penjualan, stok, laporan, dan keuangan dari satu sistem kasir modern.',style:TextStyle(color:Colors.white70,fontSize:12.5,height:1.4,fontWeight:FontWeight.w600))),
+              const SizedBox(height:12),
+              Row(children:[
+                FilledButton.icon(onPressed:_activateLicense,style:FilledButton.styleFrom(backgroundColor:Colors.white,foregroundColor:AppColors.red,elevation:0,padding:const EdgeInsets.symmetric(horizontal:14,vertical:10),minimumSize:Size.zero),icon:const Icon(Icons.key_rounded,size:17),label:const Text('Aktivasi Lisensi',style:TextStyle(fontWeight:FontWeight.w900))),
+                const SizedBox(width:10),
+                TextButton(onPressed:()=>ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('Untuk berlangganan, hubungi cp.colonel.pos@gmail.com'))),style:TextButton.styleFrom(foregroundColor:Colors.white,padding:EdgeInsets.zero,minimumSize:Size.zero,tapTargetSize:MaterialTapTargetSize.shrinkWrap),child:const Text('Berlangganan Sekarang',style:TextStyle(fontWeight:FontWeight.w800,decoration:TextDecoration.underline))),
+              ]),
             ]),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isDark) {
-    final base = isDark ? const Color(0xFF090B10) : const Color(0xFFD71920);
-    final mid = isDark ? const Color(0xFF17080D) : const Color(0xFFB90F18);
-    final deep = isDark ? const Color(0xFF030407) : const Color(0xFF78060C);
-    final secondary = Colors.white.withValues(alpha: .78);
-
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        20,
-        AppSpacing.lg,
-        18,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AppColors.red.withValues(alpha: isDark ? .38 : .22),
-          width: 1,
-        ),
-        gradient: LinearGradient(
-          colors: [base, mid, deep],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: const [0, .52, 1],
-        ),
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(28),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: .55)
-                : AppColors.red.withValues(alpha: .20),
-            blurRadius: 28,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            left: -18,
-            right: -18,
-            top: -2,
-            height: 176,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: isDark ? .12 : .16,
-                child: Image.asset(
-                  'assets/images/cp_header_artwork.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  filterQuality: FilterQuality.high,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: -6,
-            bottom: -4,
-            width: 154,
-            height: 154,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: isDark ? .92 : .94,
-                child: Image.asset(
-                  'assets/images/cp_pos_header_illustration.png',
-                  fit: BoxFit.contain,
-                  alignment: Alignment.bottomRight,
-                  filterQuality: FilterQuality.high,
-                ),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: IgnorePointer(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withValues(alpha: isDark ? .12 : .02),
-                      Colors.transparent,
-                      deep.withValues(alpha: .72),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: -70,
-            top: -72,
-            child: Container(
-              width: 210,
-              height: 210,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: .08),
-                  width: 26,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 12,
-            bottom: -90,
-            child: Container(
-              width: 190,
-              height: 190,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: .025),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: .10),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: .16),
-                      ),
-                    ),
-                    child: const CpLogo(size: 50),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'CP POS',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: .5,
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          'Professional Point of Sale',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: .10),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: .12),
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.notifications_none_rounded,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Text(
-                'Selamat datang, ${widget.username}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 21,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -.3,
-                ),
-              ),
-              const SizedBox(height: 7),
-              Row(
-                children: [
-                  _headerPill(Icons.person_outline_rounded, widget.role),
-                  const SizedBox(width: 7),
-                  _headerPill(Icons.verified_rounded, 'Trial 6.5'),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Kelola penjualan, stok, dan laporan dalam satu tempat.',
-                      style: TextStyle(
-                        color: secondary,
-                        fontSize: 12.5,
-                        height: 1.3,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  FilledButton.icon(
-                    onPressed: () async {
-                      final uri = Uri(
-                        scheme: 'mailto',
-                        path: 'cp.colonel.pos@gmail.com',
-                        queryParameters: {
-                          'subject': 'Saya ingin menambah layanan',
-                        },
-                      );
-                      await launchUrl(uri);
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.red,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 13,
-                        vertical: 10,
-                      ),
-                      minimumSize: Size.zero,
-                    ),
-                    icon: const Icon(
-                      Icons.workspace_premium_rounded,
-                      size: 17,
-                    ),
-                    label: const Text(
-                      'Upgrade',
-                      style: TextStyle(fontWeight: FontWeight.w900),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  onPressed: _activateLicense,
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  icon: const Icon(Icons.key_outlined, size: 16),
-                  label: const Text(
-                    'Aktivasi Lisensi',
-                    style: TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _headerPill(IconData icon, String label) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .11), borderRadius: BorderRadius.circular(999), border: Border.all(color: Colors.white.withValues(alpha: .12))),
-    child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(icon, size: 14, color: Colors.white), const SizedBox(width: 5), Text(label, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w800))]),
+  Widget _headerPill(IconData icon,String label)=>Container(
+    padding:const EdgeInsets.symmetric(horizontal:10,vertical:6),
+    decoration:BoxDecoration(color:Colors.white.withValues(alpha:.11),borderRadius:BorderRadius.circular(999),border:Border.all(color:Colors.white.withValues(alpha:.14))),
+    child:Row(mainAxisSize:MainAxisSize.min,children:[Icon(icon,size:14,color:Colors.white),const SizedBox(width:5),Text(label,style:const TextStyle(color:Colors.white,fontSize:11,fontWeight:FontWeight.w800))]),
   );
 
-  Widget _sectionTitle(String title, String subtitle) => Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(title, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, letterSpacing: -.2)),
-      const SizedBox(height: 3),
-      Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12, fontWeight: FontWeight.w600)),
-    ])),
-    Container(width: 7, height: 7, decoration: const BoxDecoration(color: AppColors.red, shape: BoxShape.circle)),
+  Widget _sectionTitle(String title,String subtitle)=>Row(crossAxisAlignment:CrossAxisAlignment.end,children:[
+    Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(title,style:const TextStyle(fontSize:19,fontWeight:FontWeight.w900,letterSpacing:-.2)),const SizedBox(height:3),Text(subtitle,style:TextStyle(color:Theme.of(context).colorScheme.onSurfaceVariant,fontSize:12,fontWeight:FontWeight.w600))])),
+    Container(width:7,height:7,decoration:const BoxDecoration(color:AppColors.red,shape:BoxShape.circle)),
   ]);
 
-  Widget _quick(String title, IconData icon, String action) {
-    final colors = Theme.of(context).colorScheme;
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => widget.onQuickAccess?.call(action),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-          child: Row(
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.red.withValues(alpha: .16),
-                      AppColors.red.withValues(alpha: .06),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(13),
-                  border: Border.all(
-                    color: AppColors.red.withValues(alpha: .24),
-                  ),
-                ),
-                child: Icon(icon, color: AppColors.red, size: 20),
-              ),
-              const SizedBox(width: 11),
-              Expanded(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: colors.onSurfaceVariant,
-              ),
-            ],
-          ),
-        ),
-      ),
+  Widget _quick(String title,IconData icon,String action,Color accent){
+    final dark=Theme.of(context).brightness==Brightness.dark;
+    return Container(
+      decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .60 : .32),width:1.2)),
+      clipBehavior:Clip.antiAlias,
+      child:InkWell(onTap:()=>widget.onQuickAccess?.call(action),child:Padding(padding:const EdgeInsets.all(13),child:Column(crossAxisAlignment:CrossAxisAlignment.start,mainAxisAlignment:MainAxisAlignment.center,children:[Container(width:45,height:45,decoration:CpVisual.iconTile(accent,dark:dark),child:Icon(icon,color:accent,size:21)),const SizedBox(height:10),Text(title,style:const TextStyle(fontSize:13.5,fontWeight:FontWeight.w900))]))),
     );
   }
 
-  Widget _stat(
-    String title,
-    String value,
-    IconData icon,
-    bool primary, {
-    VoidCallback? onTap,
-  }) {
-    final colors = Theme.of(context).colorScheme;
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        onTap: onTap,
-        child: Stack(
-          children: [
-            Positioned(
-              right: -28,
-              top: -34,
-              child: Container(
-                width: 92,
-                height: 92,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.red.withValues(
-                    alpha: primary ? .055 : .025,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: primary
-                            ? [
-                                AppColors.red.withValues(alpha: .18),
-                                AppColors.red.withValues(alpha: .06),
-                              ]
-                            : [
-                                colors.onSurface.withValues(alpha: .065),
-                                colors.onSurface.withValues(alpha: .025),
-                              ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: primary
-                            ? AppColors.red.withValues(alpha: .28)
-                            : colors.onSurface.withValues(alpha: .18),
-                      ),
-                    ),
-                    child: Icon(
-                      icon,
-                      color: primary ? AppColors.red : colors.onSurface,
-                      size: 21,
-                    ),
-                  ),
-                  const SizedBox(width: 11),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: colors.onSurfaceVariant,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            if (onTap != null)
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 17,
-                                color: colors.onSurfaceVariant,
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        FittedBox(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            value,
-                            style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w900,
-                              color: primary
-                                  ? AppColors.red
-                                  : colors.onSurface,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+  Widget _stat(String title,String value,IconData icon,Color accent,{VoidCallback? onTap}){
+    final dark=Theme.of(context).brightness==Brightness.dark;
+    return Container(
+      decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .62 : .32),width:1.2)),
+      clipBehavior:Clip.antiAlias,
+      child:InkWell(onTap:onTap,borderRadius:BorderRadius.circular(20),child:Padding(padding:const EdgeInsets.all(14),child:Row(children:[Container(width:45,height:45,decoration:CpVisual.iconTile(accent,dark:dark),child:Icon(icon,color:accent,size:21)),const SizedBox(width:11),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,mainAxisAlignment:MainAxisAlignment.center,children:[Text(title,maxLines:1,overflow:TextOverflow.ellipsis,style:TextStyle(color:Theme.of(context).colorScheme.onSurfaceVariant,fontSize:11,fontWeight:FontWeight.w700)),const SizedBox(height:4),FittedBox(alignment:Alignment.centerLeft,child:Text(value,style:TextStyle(fontSize:19,fontWeight:FontWeight.w900,color:accent)))])),if(onTap!=null) Icon(Icons.chevron_right_rounded,size:18,color:Theme.of(context).colorScheme.onSurfaceVariant)]))),
     );
   }
 

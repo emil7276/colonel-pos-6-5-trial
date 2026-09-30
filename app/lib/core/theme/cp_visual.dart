@@ -171,3 +171,49 @@ abstract final class CpVisual {
     );
   }
 }
+
+
+class CpMasterHeaderBackground extends StatelessWidget {
+  const CpMasterHeaderBackground({super.key});
+  @override
+  Widget build(BuildContext context) => const RepaintBoundary(
+    child: CustomPaint(painter: _CpMasterHeaderPainter(), child: SizedBox.expand()),
+  );
+}
+
+class _CpMasterHeaderPainter extends CustomPainter {
+  const _CpMasterHeaderPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final base = Paint()..shader = const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFF040609), Color(0xFF19070B), Color(0xFF080B10)],
+    ).createShader(rect);
+    canvas.drawRect(rect, base);
+    void streak(double x,double y,double dx,double dy,double width,double alpha) {
+      final p = Paint()
+        ..color = const Color(0xFFD71920).withValues(alpha: alpha)
+        ..strokeWidth = width
+        ..strokeCap = StrokeCap.round
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+      canvas.drawLine(Offset(x,y), Offset(x+dx,y+dy), p);
+    }
+    streak(size.width*.02,size.height*.88,size.width*.48,-size.height*.48,3.4,.34);
+    streak(size.width*.28,size.height*.70,size.width*.42,-size.height*.40,2.2,.22);
+    streak(size.width*.56,size.height*.92,size.width*.38,-size.height*.55,2.8,.30);
+    streak(size.width*.72,size.height*.36,size.width*.32,-size.height*.28,2.8,.20);
+    final neon = Paint()
+      ..color = const Color(0xFFFF2630).withValues(alpha:.88)
+      ..strokeWidth = 1.15
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal,1.6);
+    canvas.drawLine(Offset(size.width*.35,size.height),Offset(size.width*.73,0),neon);
+    neon.color = const Color(0xFFD71920).withValues(alpha:.58);
+    canvas.drawLine(Offset(size.width*.60,size.height),Offset(size.width,size.height*.20),neon);
+    final edge = Paint()..color=const Color(0xFFFF3038).withValues(alpha:.90)..strokeWidth=1;
+    canvas.drawLine(Offset(0,size.height-1),Offset(size.width,size.height-1),edge);
+  }
+  @override
+  bool shouldRepaint(covariant _CpMasterHeaderPainter oldDelegate)=>false;
+}

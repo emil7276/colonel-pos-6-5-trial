@@ -5,7 +5,6 @@ import '../../core/trial_service.dart';
 import '../../core/license/license_service.dart';
 import '../../core/widgets.dart';
 import '../../core/theme/theme_controller.dart';
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/cp_visual.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
@@ -162,7 +161,6 @@ String _trialLabel() {
     ];
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -171,125 +169,43 @@ String _trialLabel() {
         foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        toolbarHeight: 112,
-        flexibleSpace: Stack(
-          fit: StackFit.expand,
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: CpVisual.redGradient(dark: isDark),
-              ),
-            ),
-            Opacity(
-              opacity: isDark ? .18 : .10,
-              child: Image.asset(
-                'assets/images/cp_header_artwork.png',
-                fit: BoxFit.cover,
-                alignment: Alignment.centerRight,
-              ),
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.black.withValues(alpha: isDark ? .46 : .24),
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: isDark ? .34 : .16),
-                  ],
-                ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.red.withValues(alpha: isDark ? .72 : .42),
-                    width: 1.2,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        titleSpacing: 8,
-        leadingWidth: 58,
+        toolbarHeight: 124,
+        flexibleSpace: const CpMasterHeaderBackground(),
+        titleSpacing: 4,
+        leadingWidth: 56,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 12, top: 10, bottom: 10),
-          child: CpLogo(size: 44),
+          padding: const EdgeInsets.only(left: 10),
+          child: CpLogo(size: 42),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(index == 0 ? 'CP POS' : titles[index], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .2)),
-            Text('${widget.username} • ${widget.role}', style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w600)),
-            if (_trialStatus != null || _licenseInfo != null)
-              Text(
-                _trialLabel(),
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+            const Text('CP POS', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: .2)),
+            Text('${widget.username} • ${widget.role}', style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w700)),
+            Row(children: [
+              Text(_trialLabel(), style: const TextStyle(fontSize: 10.5, color: Color(0xFF7DE7F2), fontWeight: FontWeight.w900)),
+              const SizedBox(width: 8),
               TextButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Untuk berlangganan, hubungi cp.colonel.pos@gmail.com',
-                      ),
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(0, 20),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: const Text(
-                  'Berlangganan Sekarang',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Untuk berlangganan, hubungi cp.colonel.pos@gmail.com'))),
+                style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap, foregroundColor: const Color(0xFFFF3942)),
+                child: const Text('Berlangganan Sekarang', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, decoration: TextDecoration.underline)),
               ),
+            ]),
           ],
         ),
         actions: [
           PopupMenuButton<ThemeMode>(
             tooltip: 'Pilih tema',
-            icon: Icon(
-              Theme.of(context).brightness == Brightness.dark
-                  ? Icons.dark_mode_rounded
-                  : Icons.light_mode_rounded,
-            ),
-            onSelected: (mode) async {
-              await ThemeController.instance.setMode(mode);
-            },
+            icon: Icon(Theme.of(context).brightness == Brightness.dark ? Icons.dark_mode_rounded : Icons.light_mode_rounded),
+            onSelected: (mode) async { await ThemeController.instance.setMode(mode); },
             itemBuilder: (_) => [
-              CheckedPopupMenuItem(
-                value: ThemeMode.system,
-                checked: ThemeController.instance.mode == ThemeMode.system,
-                child: const Text('Sistem / Otomatis'),
-              ),
-              CheckedPopupMenuItem(
-                value: ThemeMode.light,
-                checked: ThemeController.instance.mode == ThemeMode.light,
-                child: const Text('Mode Terang'),
-              ),
-              CheckedPopupMenuItem(
-                value: ThemeMode.dark,
-                checked: ThemeController.instance.mode == ThemeMode.dark,
-                child: const Text('Mode Gelap'),
-              ),
+              CheckedPopupMenuItem(value: ThemeMode.system, checked: ThemeController.instance.mode == ThemeMode.system, child: const Text('Sistem / Otomatis')),
+              CheckedPopupMenuItem(value: ThemeMode.light, checked: ThemeController.instance.mode == ThemeMode.light, child: const Text('Mode Terang')),
+              CheckedPopupMenuItem(value: ThemeMode.dark, checked: ThemeController.instance.mode == ThemeMode.dark, child: const Text('Mode Gelap')),
             ],
           ),
-          IconButton(
-            tooltip: 'Logout',
-            onPressed: logout,
-            icon: const Icon(Icons.logout_rounded),
-          ),
+          IconButton(tooltip: 'Logout', onPressed: logout, icon: const Icon(Icons.logout_rounded)),
           const SizedBox(width: 6),
         ],
       ),
