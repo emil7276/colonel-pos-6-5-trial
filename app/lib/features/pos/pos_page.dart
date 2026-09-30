@@ -914,9 +914,7 @@ class PosPageState extends State<PosPage> {
                           child: OutlinedButton(
                             onPressed: discountDialog,
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: red.withValues(alpha: 0.65)),
-                              shadowColor: red.withValues(alpha: 0.32),
-                              elevation: 5,
+                              side: const BorderSide(color: red, width: 1.5),
                             ),
                             child: const Text('Diskon'),
                           ),
@@ -929,8 +927,10 @@ class PosPageState extends State<PosPage> {
                             style: FilledButton.styleFrom(
                               backgroundColor: red,
                               foregroundColor: Colors.white,
-                              shadowColor: red.withValues(alpha: 0.72),
-                              elevation: 9,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(color: red, width: 1.5),
+                              ),
                             ),
                             child: const Text('BAYAR'),
                           ),
