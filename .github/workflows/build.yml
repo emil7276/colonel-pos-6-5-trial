@@ -3,7 +3,7 @@ name: CP Colonel POS 6.5
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, cp65-skin-sound]
 
 jobs:
   build:
