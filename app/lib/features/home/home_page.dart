@@ -209,6 +209,32 @@ String _trialLabel() {
           ],
         ),
         actions: [
+          if (index == 1)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.55),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: red.withValues(alpha: 0.42),
+                    blurRadius: 8,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: TextButton.icon(
+                onPressed: () => posKey.currentState?.showQris(),
+                icon: const Icon(Icons.qr_code_2_rounded, size: 18),
+                label: const Text('QRIS'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  visualDensity: VisualDensity.compact,
+                ),
+              ),
+            ),
           IconButton(
             tooltip: 'Logout',
             onPressed: logout,
@@ -221,7 +247,17 @@ String _trialLabel() {
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           child: Container(
-            color: bg,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  bg,
+                  redSoft.withValues(alpha: 0.34),
+                  const Color(0xFFEFF3F8),
+                ],
+              ),
+            ),
             child: Stack(
               children: [
                 Positioned.fill(

@@ -404,10 +404,15 @@ class PosPageState extends State<PosPage> {
       );
 
     final tingPlayer = AudioPlayer();
-    await tingPlayer.play(AssetSource('audio/transaction_success_ting_short.wav'));
-    Future.delayed(const Duration(milliseconds: 1200), () => tingPlayer.dispose());
+    await tingPlayer.play(
+      AssetSource('audio/transaction_success_ting_short.wav'),
+    );
+    Future.delayed(
+      const Duration(milliseconds: 1200),
+      () => tingPlayer.dispose(),
+    );
 
-      // Transaksi sudah berhasil tersimpan.
+    // Transaksi sudah berhasil tersimpan.
       // Quote tidak memengaruhi perhitungan transaksi.
       try {
         final quote = await QuoteService.nextQuote();
@@ -612,16 +617,6 @@ class PosPageState extends State<PosPage> {
                       style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
                     ),
                   ),
-                  OutlinedButton.icon(
-                    onPressed: showQris,
-                    icon: const Icon(Icons.qr_code_2_rounded, size: 18),
-                    label: const Text('Tampilkan QRIS'),
-                    style: OutlinedButton.styleFrom(
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    ),
-                  ),
-                  const SizedBox(width: 7),
                   Text(
                     '${filtered.length} menu',
                     style: const TextStyle(color: inkMuted, fontWeight: FontWeight.w700),
@@ -648,7 +643,18 @@ class PosPageState extends State<PosPage> {
                       decoration: BoxDecoration(
                         color: selected ? red : Colors.white,
                         borderRadius: BorderRadius.circular(13),
-                        border: Border.all(color: selected ? red : line),
+                        border: Border.all(
+                          color: selected ? red : line,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: (selected ? red : navy).withValues(alpha: 0.22),
+                            blurRadius: 7,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -672,7 +678,7 @@ class PosPageState extends State<PosPage> {
                 },
               ),
             ),
-            const SizedBox(height: 7),
+            const SizedBox(height: 4),
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
@@ -680,13 +686,22 @@ class PosPageState extends State<PosPage> {
                   crossAxisCount: columns,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
-                  childAspectRatio: tablet ? 1.55 : 1.32,
+                  childAspectRatio: tablet ? 1.72 : 1.48,
                 ),
                 itemCount: filtered.length,
                 itemBuilder: (_, i) {
                   final p = filtered[i];
                   return Card(
                     color: Colors.white,
+                    elevation: 5,
+                    shadowColor: red.withValues(alpha: 0.28),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13),
+                      side: BorderSide(
+                        color: red.withValues(alpha: 0.42),
+                        width: 1,
+                      ),
+                    ),
                     clipBehavior: Clip.antiAlias,
                     child: InkWell(
                       onTap: () => add(p),
@@ -738,22 +753,42 @@ class PosPageState extends State<PosPage> {
 
         final cartPanel = Card(
           color: Colors.white,
+          elevation: 6,
+          shadowColor: navy.withValues(alpha: 0.30),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(
+              color: navy.withValues(alpha: 0.36),
+              width: 1,
+            ),
+          ),
           child: Column(
             children: [
               const ListTile(
                 dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
                 leading: Icon(Icons.shopping_cart_rounded, color: red, size: 20),
-                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
+                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13)),
               ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(
-                      controller: customerNameController,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: navy.withValues(alpha: 0.16),
+                            blurRadius: 7,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: customerNameController,
                       textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
                         labelText: 'Nama Pelanggan',
@@ -761,19 +796,30 @@ class PosPageState extends State<PosPage> {
                         prefixIcon: Icon(Icons.person_outline_rounded),
                       ),
                     ),
-                    const SizedBox(height: 7),
+                    const SizedBox(height: 4),
                     SizedBox(
-                      height: 38,
+                      height: 34,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: 3,
-                        separatorBuilder: (_, __) => const SizedBox(width: 6),
+                        separatorBuilder: (_, __) => const SizedBox(width: 4),
                         itemBuilder: (_, i) {
                           const types = ['Retail', 'Online', 'Grosir/Reseller'];
                           final type = types[i];
                           final selected = customerType == type;
-                          return ChoiceChip(
-                            label: Text(type),
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (selected ? red : navy).withValues(alpha: 0.18),
+                                  blurRadius: 6,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: ChoiceChip(
+                              label: Text(type),
                             selected: selected,
                             onSelected: (_) => setState(() => customerType = type),
                             selectedColor: redSoft,
@@ -784,6 +830,7 @@ class PosPageState extends State<PosPage> {
                             ),
                             side: BorderSide(color: selected ? red : line),
                             visualDensity: VisualDensity.compact,
+                          ),
                           );
                         },
                       ),
@@ -851,15 +898,29 @@ class PosPageState extends State<PosPage> {
                         Text(rp(total), style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 17, color: red)),
                       ],
                     ),
-                    const SizedBox(height: 7),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        Expanded(child: OutlinedButton(onPressed: discountDialog, child: const Text('Diskon'))),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: discountDialog,
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: red.withValues(alpha: 0.65)),
+                              shadowColor: red.withValues(alpha: 0.32),
+                              elevation: 5,
+                            ),
+                            child: const Text('Diskon'),
+                          ),
+                        ),
                         const SizedBox(width: 7),
                         Expanded(
                           flex: 2,
                           child: FilledButton(
                             onPressed: cart.isEmpty ? null : payment,
+                            style: FilledButton.styleFrom(
+                              shadowColor: red.withValues(alpha: 0.72),
+                              elevation: 9,
+                            ),
                             child: const Text('BAYAR'),
                           ),
                         ),
@@ -890,7 +951,7 @@ class PosPageState extends State<PosPage> {
           child: Column(
             children: [
               Expanded(flex: 7, child: productGrid),
-              SizedBox(height: cart.isEmpty ? 330 : 390, child: cartPanel),
+              SizedBox(height: cart.isEmpty ? 250 : 305, child: cartPanel),
             ],
           ),
         );
