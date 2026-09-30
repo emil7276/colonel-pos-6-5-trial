@@ -318,11 +318,6 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
     );
-  }){
-    final dark=Theme.of(context).brightness==Brightness.dark;
-    return Container(
-      decoration:BoxDecoration(color:dark?CpVisual.darkSurface:Colors.white,borderRadius:BorderRadius.circular(20),border:Border.all(color:accent.withValues(alpha:dark ? .62 : .32),width:1.2)),
-
   Widget _recentSale(BuildContext context, SaleModel sale) {
     final colors = Theme.of(context).colorScheme;
     return Card(
