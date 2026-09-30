@@ -1,4 +1,4 @@
-name: CP Colonel POS 6.5
+name: CP Colonel POS 6.5 GOLD
 
 on:
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Set Android app label
         working-directory: app
-        run: sed -i 's/android:label="[^"]*"/android:label="CP Colonel POS"/' android/app/src/main/AndroidManifest.xml
+        run: sed -i 's/android:label="[^"]*"/android:label="CP Colonel POS GOLD"/' android/app/src/main/AndroidManifest.xml
 
       - name: Get dependencies
         working-directory: app
@@ -56,11 +56,11 @@ jobs:
         working-directory: app
         run: |
           flutter build apk --release
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/cp-colonel-pos-6.5-TRIAL.apk
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/CP-COLONEL-POS-6.5-GOLD.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: cp-colonel-pos-6.5-TRIAL-apk
-          path: app/build/app/outputs/flutter-apk/cp-colonel-pos-6.5-TRIAL.apk
+          name: GOLD
+          path: app/build/app/outputs/flutter-apk/CP-COLONEL-POS-6.5-GOLD.apk
           if-no-files-found: error

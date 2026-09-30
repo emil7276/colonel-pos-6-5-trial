@@ -172,9 +172,9 @@ String _trialLabel() {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Color(0xFFB51232),
-                    Color(0xFF650D20),
-                    Color(0xFF090909),
+                    Color(0xFF3A2B08),
+                    Color(0xFF17130A),
+                    Color(0xFF050505),
                   ],
                 ),
               ),
@@ -191,7 +191,7 @@ String _trialLabel() {
                     color: Colors.white.withValues(alpha: 0.28),
                     boxShadow: [
                       BoxShadow(
-                        color: red.withValues(alpha: 0.55),
+                        color: gold.withValues(alpha: 0.70),
                         blurRadius: 7,
                         spreadRadius: 1,
                       ),
@@ -212,7 +212,7 @@ String _trialLabel() {
                     color: Colors.white.withValues(alpha: 0.22),
                     boxShadow: [
                       BoxShadow(
-                        color: red.withValues(alpha: 0.45),
+                        color: gold.withValues(alpha: 0.60),
                         blurRadius: 7,
                         spreadRadius: 1,
                       ),
@@ -276,11 +276,11 @@ String _trialLabel() {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.55),
+                  color: gold.withValues(alpha: 0.85),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: red.withValues(alpha: 0.42),
+                    color: gold.withValues(alpha: 0.55),
                     blurRadius: 8,
                     spreadRadius: 1,
                   ),
@@ -291,7 +291,7 @@ String _trialLabel() {
                 icon: const Icon(Icons.qr_code_2_rounded, size: 18),
                 label: const Text('QRIS'),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
+                  foregroundColor: gold,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   visualDensity: VisualDensity.compact,
                 ),
@@ -300,7 +300,7 @@ String _trialLabel() {
           IconButton(
             tooltip: 'Logout',
             onPressed: logout,
-            icon: const Icon(Icons.logout_rounded),
+            icon: const Icon(Icons.logout_rounded, color: gold),
           ),
           const SizedBox(width: 6),
         ],

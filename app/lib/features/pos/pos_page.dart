@@ -275,7 +275,7 @@ class PosPageState extends State<PosPage> {
                             label: Text(x),
                             selected: method == x,
                             onSelected: (_) => setDialog(() => method = x),
-                            selectedColor: redSoft,
+                            selectedColor: goldSoft,
                             labelStyle: TextStyle(
                               color: method == x ? red : ink,
                               fontWeight: FontWeight.w800,
@@ -694,12 +694,12 @@ class PosPageState extends State<PosPage> {
                   return Card(
                     color: Colors.white,
                     elevation: 5,
-                    shadowColor: boxBorder.withValues(alpha: 0.45),
+                    shadowColor: gold.withValues(alpha: 0.38),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
                       side: BorderSide(
-                        color: boxBorder,
-                        width: 1,
+                        color: goldDeep,
+                        width: 1.1,
                       ),
                     ),
                     clipBehavior: Clip.antiAlias,
@@ -714,10 +714,18 @@ class PosPageState extends State<PosPage> {
                               width: 34,
                               height: 34,
                               decoration: BoxDecoration(
-                                color: redSoft,
+                                color: goldSoft,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Icon(Icons.fastfood_rounded, size: 19, color: red),
+                              child: Icon(
+                                p.category == 'Minuman'
+                                    ? Icons.local_drink_rounded
+                                    : p.category == 'Paket'
+                                        ? Icons.inventory_2_rounded
+                                        : Icons.restaurant_rounded,
+                                size: 19,
+                                color: goldDeep,
+                              ),
                             ),
                             const SizedBox(height: 5),
                             Text(
@@ -752,14 +760,14 @@ class PosPageState extends State<PosPage> {
         );
 
         final cartPanel = Card(
-          color: Colors.white,
-          elevation: 6,
-          shadowColor: red.withValues(alpha: 0.38),
+          color: goldPanel,
+          elevation: 8,
+          shadowColor: gold.withValues(alpha: 0.48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
-              color: red.withValues(alpha: 0.90),
-              width: 1,
+              color: gold.withValues(alpha: 0.95),
+              width: 1.2,
             ),
           ),
           child: Column(
@@ -767,8 +775,8 @@ class PosPageState extends State<PosPage> {
               const ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                leading: Icon(Icons.shopping_cart_rounded, color: red, size: 20),
-                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13)),
+                leading: Icon(Icons.shopping_cart_rounded, color: gold, size: 20),
+                title: Text('Keranjang', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13, color: gold)),
               ),
 
               Padding(
@@ -781,7 +789,7 @@ class PosPageState extends State<PosPage> {
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: navy.withValues(alpha: 0.16),
+                            color: gold.withValues(alpha: 0.18),
                             blurRadius: 7,
                             spreadRadius: 1,
                           ),

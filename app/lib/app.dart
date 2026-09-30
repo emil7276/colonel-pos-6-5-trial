@@ -8,13 +8,13 @@ class ColonelApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: red,
+      seedColor: gold,
       brightness: Brightness.light,
     );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CP POS 6.5',
+      title: 'CP POS 6.5 GOLD',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: scheme,
@@ -40,7 +40,7 @@ class ColonelApp extends StatelessWidget {
           elevation: 0,
           centerTitle: false,
           scrolledUnderElevation: 0,
-          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: gold),
         ),
         cardTheme: CardThemeData(
           elevation: 0,
@@ -74,8 +74,8 @@ class ColonelApp extends StatelessWidget {
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            backgroundColor: red,
-            foregroundColor: Colors.white,
+            backgroundColor: gold,
+            foregroundColor: ink,
             minimumSize: const Size(0, 48),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             shape: RoundedRectangleBorder(
@@ -86,8 +86,8 @@ class ColonelApp extends StatelessWidget {
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             minimumSize: const Size(0, 48),
-            foregroundColor: ink,
-            side: const BorderSide(color: line),
+            foregroundColor: goldDeep,
+            side: const BorderSide(color: goldDeep),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
@@ -95,28 +95,28 @@ class ColonelApp extends StatelessWidget {
         ),
         navigationBarTheme: NavigationBarThemeData(
           height: 76,
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          indicatorColor: red.withValues(alpha: .12),
+          backgroundColor: navy,
+          surfaceTintColor: navy,
+          indicatorColor: gold.withValues(alpha: .18),
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             final selected = states.contains(WidgetState.selected);
             return TextStyle(
               fontSize: 12,
               fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-              color: selected ? red : inkMuted,
+              color: selected ? gold : Colors.white70,
             );
           }),
           iconTheme: WidgetStateProperty.resolveWith((states) {
             final selected = states.contains(WidgetState.selected);
             return IconThemeData(
-              color: selected ? red : inkMuted,
+              color: selected ? gold : Colors.white70,
               size: selected ? 25 : 23,
             );
           }),
         ),
         chipTheme: ChipThemeData(
           backgroundColor: Colors.white,
-          selectedColor: red.withValues(alpha: .12),
+          selectedColor: gold.withValues(alpha: .18),
           side: const BorderSide(color: line),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
