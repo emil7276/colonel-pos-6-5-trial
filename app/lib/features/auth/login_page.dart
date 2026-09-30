@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants.dart';
 import '../../core/utils.dart';
 import '../../core/widgets.dart';
+import '../../core/theme/theme_controller.dart';
 import '../../data/database.dart';
 import '../home/home_page.dart';
 import 'greeting_page.dart';
@@ -60,6 +61,8 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
+      await ThemeController.instance.loadForUser(u['username'] as String);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -84,11 +87,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFFFF1F1), bg],
+            colors: isDark
+                ? const [Color(0xFF180608), Color(0xFF080B10)]
+                : const [Color(0xFFFFF1F1), bg],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -100,6 +107,31 @@ class _LoginPageState extends State<LoginPage> {
               constraints: const BoxConstraints(maxWidth: 430),
               child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: PopupMenuButton<ThemeMode>(
+                      tooltip: 'Tema',
+                      icon: const Icon(Icons.brightness_6_rounded),
+                      onSelected: (mode) => ThemeController.instance.setMode(mode),
+                      itemBuilder: (_) => [
+                        CheckedPopupMenuItem(
+                          value: ThemeMode.system,
+                          checked: ThemeController.instance.mode == ThemeMode.system,
+                          child: const Text('Sistem / Otomatis'),
+                        ),
+                        CheckedPopupMenuItem(
+                          value: ThemeMode.light,
+                          checked: ThemeController.instance.mode == ThemeMode.light,
+                          child: const Text('Mode Terang'),
+                        ),
+                        CheckedPopupMenuItem(
+                          value: ThemeMode.dark,
+                          checked: ThemeController.instance.mode == ThemeMode.dark,
+                          child: const Text('Mode Gelap'),
+                        ),
+                      ],
+                    ),
+                  ),
                   const CpLogo(size: 118),
                   const SizedBox(height: 16),
                   const Text(

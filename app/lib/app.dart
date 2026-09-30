@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_controller.dart';
 import 'features/auth/login_page.dart';
 
-class ColonelApp extends StatelessWidget {
+class ColonelApp extends StatefulWidget {
   const ColonelApp({super.key});
+
+  @override
+  State<ColonelApp> createState() => _ColonelAppState();
+}
+
+class _ColonelAppState extends State<ColonelApp> {
+  final controller = ThemeController.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_themeChanged);
+  }
+
+  void _themeChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_themeChanged);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +36,7 @@ class ColonelApp extends StatelessWidget {
       title: 'CP POS 6.5',
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.system,
+      themeMode: controller.mode,
       home: const LoginPage(),
     );
   }

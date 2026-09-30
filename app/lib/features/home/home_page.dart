@@ -4,6 +4,7 @@ import '../../core/constants.dart';
 import '../../core/trial_service.dart';
 import '../../core/license/license_service.dart';
 import '../../core/widgets.dart';
+import '../../core/theme/theme_controller.dart';
 import '../auth/login_page.dart';
 import '../pos/pos_page.dart';
 import '../reports/report_page.dart';
@@ -95,6 +96,7 @@ String _trialLabel() {
   }
 
   Future<void> logout() async {
+    ThemeController.instance.resetToSystem();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const LoginPage()),
@@ -209,6 +211,34 @@ String _trialLabel() {
           ],
         ),
         actions: [
+          PopupMenuButton<ThemeMode>(
+            tooltip: 'Pilih tema',
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.dark_mode_rounded
+                  : Icons.light_mode_rounded,
+            ),
+            onSelected: (mode) async {
+              await ThemeController.instance.setMode(mode);
+            },
+            itemBuilder: (_) => [
+              CheckedPopupMenuItem(
+                value: ThemeMode.system,
+                checked: ThemeController.instance.mode == ThemeMode.system,
+                child: const Text('Sistem / Otomatis'),
+              ),
+              CheckedPopupMenuItem(
+                value: ThemeMode.light,
+                checked: ThemeController.instance.mode == ThemeMode.light,
+                child: const Text('Mode Terang'),
+              ),
+              CheckedPopupMenuItem(
+                value: ThemeMode.dark,
+                checked: ThemeController.instance.mode == ThemeMode.dark,
+                child: const Text('Mode Gelap'),
+              ),
+            ],
+          ),
           IconButton(
             tooltip: 'Logout',
             onPressed: logout,
