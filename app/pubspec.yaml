@@ -38,6 +38,7 @@ flutter:
     - assets/images/cp_header_artwork.png
     - assets/images/cp_pos_header_illustration.png
     - assets/audio/transaction_success_premium.wav
+    - assets/audio/transaction_success_tiengdong.mp3
 
 flutter_launcher_icons:
   android: true

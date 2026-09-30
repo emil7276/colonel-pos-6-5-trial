@@ -411,8 +411,8 @@ class PosPageState extends State<PosPage> {
       // Bunyi hanya dipicu setelah DB.createSale() sukses.
       try {
         await _successPlayer.play(
-          AssetSource('audio/transaction_success_premium.wav'),
-          volume: 0.32,
+          AssetSource('audio/transaction_success_tiengdong.mp3'),
+          volume: 0.70,
         );
       } catch (_) {
         // Audio gagal tidak boleh menggagalkan transaksi.

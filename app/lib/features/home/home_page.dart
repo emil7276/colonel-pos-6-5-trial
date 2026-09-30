@@ -162,8 +162,12 @@ String _trialLabel() {
     final theme = Theme.of(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         toolbarHeight: 66,
         titleSpacing: 8,
         leadingWidth: 58,

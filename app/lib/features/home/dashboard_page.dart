@@ -137,7 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
-        MediaQuery.of(context).padding.top + 14,
+        MediaQuery.of(context).padding.top + 80,
         AppSpacing.lg,
         18,
       ),
